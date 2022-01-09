@@ -102,7 +102,7 @@ Fill the entity with values.
 $entity->fill($data, $options);
 ```
 
-If the `mutate` option is set to *true*, and a `_setFieldName` method exists in the entity (where the field name is "*field_name*"), then that method will be called for each value being set. The argument will be the value being populated, and the return value of that method will be stored in the entity instead.
+If the `mutate` option is set to *true*, and a `_setFieldName` method exists in the entity (where the field name is *field_name*), then that method will be called for each value being set. The argument will be the value being populated, and the return value of that method will be stored in the entity instead.
 
 **Fill Invalid**
 
@@ -131,7 +131,7 @@ Alternatively, you can get a value using the magic `__get` method.
 $value = $entity->$field;
 ```
 
-If a `_getFieldName` method exists in the entity (where the field name is "*field_name*"), then that method will be called for the value being retrieved. The argument of that method will be the value stored in the entity, and the return value of that method will be returned instead.
+If a `_getFieldName` method exists in the entity (where the field name is *field_name*), then that method will be called for the value being retrieved. The argument of that method will be the value stored in the entity, and the return value of that method will be returned instead.
 
 **Get Accessible**
 
@@ -329,7 +329,7 @@ Alternatively, you can set a value using the magic `__set` method.
 $entity->$field = $value;
 ```
 
-If the `mutate` option is set to *true*, and a `_setFieldName` method exists in the entity (where the field name is "*field_name*"), then that method will be called for the value being set. The argument will be the value being populated, and the return value of that method will be stored in the entity instead.
+If the `mutate` option is set to *true*, and a `_setFieldName` method exists in the entity (where the field name is *field_name*), then that method will be called for the value being set. The argument will be the value being populated, and the return value of that method will be stored in the entity instead.
 
 **Set Access**
 
