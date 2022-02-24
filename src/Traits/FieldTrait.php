@@ -68,11 +68,13 @@ trait FieldTrait
 
     /**
      * Extract dirty values from the entity.
-     * @param array $fields The fields to extract.
+     * @param array|null $fields The fields to extract.
      * @return array The extracted values.
      */
-    public function extractDirty(array $fields): array
+    public function extractDirty(array|null $fields = null): array
     {
+        $fields ??= $this->getDirty();
+
         $result = [];
         foreach ($fields as $field) {
             if (!$this->isDirty($field)) {
@@ -237,12 +239,24 @@ trait FieldTrait
 
     /**
      * Determine if an entity value is empty.
-     * @param string $field The field name.
+     * @param string|null $field The field name.
      * @return bool TRUE if the value is empty, otherwise FALSE.
      */
-    public function isEmpty(string $field): bool
+    public function isEmpty(string|null $field = null): bool
     {
-        return !array_key_exists($field, $this->fields) || in_array($this->fields[$field], [null, '', []]);
+        if ($field !== null) {
+            return !array_key_exists($field, $this->fields) || in_array($this->fields[$field], [null, '', []]);
+        }
+
+        $fields = array_keys($this->fields);
+
+        foreach ($fields AS $field) {
+            if (!$this->isEmpty($field)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

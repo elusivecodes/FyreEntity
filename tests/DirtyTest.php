@@ -82,6 +82,24 @@ trait DirtyTest
             [
                 'test2' => 2
             ],
+            $entity->extractDirty()
+        );
+    }
+
+    public function testExtractDirtyFields(): void
+    {
+        $entity = new Entity([
+            'test1' => 1,
+            'test2' => 2,
+            'test3' => 3
+        ]);
+
+        $entity->setDirty('test2');
+
+        $this->assertSame(
+            [
+                'test2' => 2
+            ],
             $entity->extractDirty(['test2', 'test3'])
         );
     }

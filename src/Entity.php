@@ -3,6 +3,7 @@
 namespace Fyre\Entity;
 
 use
+    Fyre\DateTime\DateTime,
     Fyre\Entity\Traits\ErrorTrait,
     Fyre\Entity\Traits\FieldTrait;
 
@@ -13,7 +14,9 @@ use function
     array_combine,
     array_map,
     is_array,
-    json_encode;
+    is_object,
+    json_encode,
+    method_exists;
 
 /**
  * Entity
@@ -163,18 +166,29 @@ class Entity
 
     /**
      * Convert the entity to an array.
+     * @param bool $convertObjects Whether to convert objects to strings where possible.
      * @return array The array.
      */
-    public function toArray(): array
+    public function toArray(bool $convertObjects = false): array
     {
         $fields = $this->getVisible();
 
         $values = array_map(
-            function($field) {
+            function($field) use ($convertObjects) {
                 $value = $this->get($field);
 
                 if ($value instanceof Entity) {
                     return $value->toArray();
+                }
+
+                if ($convertObjects) {
+                    if ($value instanceof DateTime) {
+                        return $value->toISOString();
+                    }
+
+                    if (is_object($value) && method_exists($value, '__toString')) {
+                        return (string) $value;
+                    }
                 }
 
                 if (is_array($value)) {
@@ -204,7 +218,7 @@ class Entity
      */
     public function toJson(): string
     {
-        return json_encode($this->toArray(), JSON_PRETTY_PRINT) ?: '';
+        return json_encode($this->toArray(true), JSON_PRETTY_PRINT) ?: '';
     }
 
 }

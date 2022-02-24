@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use
+    Fyre\DateTime\DateTime,
     Fyre\Entity\Entity;
 
 use const
@@ -179,6 +180,18 @@ trait MagicTest
         );
     }
 
+    public function testToJsonDateTime(): void
+    {
+        $entity = new Entity([
+            'test' => new DateTime('2022-01-01')
+        ]);
+
+        $this->assertSame(
+            json_encode(['test' => '2022-01-01T00:00:00.000+00:00'], JSON_PRETTY_PRINT),
+            $entity->toJson()
+        );
+    }
+
     public function testMagicToString(): void
     {
         $entity = new Entity([
@@ -218,6 +231,18 @@ trait MagicTest
         $this->assertSame(
             json_encode($parent->toArray(), JSON_PRETTY_PRINT),
             $parent->__toString()
+        );
+    }
+
+    public function testMagicToStringDateTime(): void
+    {
+        $entity = new Entity([
+            'test' => new DateTime('2022-01-01')
+        ]);
+
+        $this->assertSame(
+            json_encode(['test' => '2022-01-01T00:00:00.000+00:00'], JSON_PRETTY_PRINT),
+            $entity->__toString()
         );
     }
 

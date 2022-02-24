@@ -79,6 +79,12 @@ Extract dirty values from the entity.
 $values = $entity->extractDirty($fields);
 ```
 
+If the `$field` argument is omitted, this method will return all dirty values.
+
+```php
+$values = $entity->extractDirty();
+```
+
 **Extract Original**
 
 Extract original values from the entity.
@@ -299,6 +305,12 @@ Determine if an entity value is empty.
 
 ```php
 $isEmpty = $entity->isEmpty($field);
+```
+
+If the `$field` argument is omitted, this method will determine whether the all entity fields are empty.
+
+```php
+$isEmpty = $entity->isEmpty();
 ```
 
 **Is New**

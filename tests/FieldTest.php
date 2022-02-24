@@ -125,7 +125,7 @@ trait FieldTest
         ]);
 
         $this->assertFalse(
-            $entity->isEmpty('test')
+            $entity->isEmpty()
         );
     }
 
@@ -136,11 +136,33 @@ trait FieldTest
         ]);
 
         $this->assertTrue(
+            $entity->isEmpty()
+        );
+    }
+
+    public function testIsEmptyField(): void
+    {
+        $entity = new Entity([
+            'test' => 2
+        ]);
+
+        $this->assertFalse(
             $entity->isEmpty('test')
         );
     }
 
-    public function testIsEmptyInvalid(): void
+    public function testIsEmptyFieldEmpty(): void
+    {
+        $entity = new Entity([
+            'test' => ''
+        ]);
+
+        $this->assertTrue(
+            $entity->isEmpty('test')
+        );
+    }
+
+    public function testIsEmptyFieldInvalid(): void
     {
         $entity = new Entity();
 
