@@ -307,7 +307,7 @@ Determine if an entity value is empty.
 $isEmpty = $entity->isEmpty($field);
 ```
 
-If the `$field` argument is omitted, this method will determine whether the all entity fields are empty.
+If the `$field` argument is omitted, this method will determine whether all entity fields are empty.
 
 ```php
 $isEmpty = $entity->isEmpty();
