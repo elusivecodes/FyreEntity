@@ -246,4 +246,58 @@ trait MagicTest
         );
     }
 
+    public function testMagicJson(): void
+    {
+        $entity = new Entity([
+            'test' => 1
+        ]);
+
+        $this->assertSame(
+            json_encode($entity->toArray(), JSON_PRETTY_PRINT),
+            json_encode($entity, JSON_PRETTY_PRINT)
+        );
+    }
+
+    public function testMagicJsonDeep(): void
+    {
+        $child = new Entity([
+            'test' => 1
+        ]);
+        $parent = new Entity([
+            'child' => $child
+        ]);
+
+        $this->assertSame(
+            json_encode($parent->toArray(), JSON_PRETTY_PRINT),
+            json_encode($parent, JSON_PRETTY_PRINT)
+        );
+    }
+
+    public function testMagicJsonNested(): void
+    {
+        $child = new Entity([
+            'test' => 1
+        ]);
+        $parent = new Entity([
+            'children' => [$child]
+        ]);
+
+        $this->assertSame(
+            json_encode($parent->toArray(), JSON_PRETTY_PRINT),
+            json_encode($parent, JSON_PRETTY_PRINT)
+        );
+    }
+
+    public function testMagicJsonDateTime(): void
+    {
+        $entity = new Entity([
+            'test' => new DateTime('2022-01-01')
+        ]);
+
+        $this->assertSame(
+            json_encode(['test' => '2022-01-01T00:00:00.000+00:00'], JSON_PRETTY_PRINT),
+            json_encode($entity, JSON_PRETTY_PRINT)
+        );
+    }
+
 }

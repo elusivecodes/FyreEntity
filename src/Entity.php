@@ -5,7 +5,8 @@ namespace Fyre\Entity;
 use
     Fyre\DateTime\DateTime,
     Fyre\Entity\Traits\ErrorTrait,
-    Fyre\Entity\Traits\FieldTrait;
+    Fyre\Entity\Traits\FieldTrait,
+    JsonSerializable;
 
 use const
     JSON_PRETTY_PRINT;
@@ -21,7 +22,7 @@ use function
 /**
  * Entity
  */
-class Entity
+class Entity implements JsonSerializable
 {
 
     protected string|null $source = null;
@@ -141,6 +142,15 @@ class Entity
     }
 
     /**
+     * Convert the entity to an array for JSON serializing.
+     * @return array The array for serializing.
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray(true);
+    }
+
+    /**
      * Set whether the entity is new.
      * @param bool $new Whether the entity is new.
      * @return Entity The Entity.
@@ -218,7 +228,7 @@ class Entity
      */
     public function toJson(): string
     {
-        return json_encode($this->toArray(true), JSON_PRETTY_PRINT) ?: '';
+        return json_encode($this, JSON_PRETTY_PRINT) ?: '';
     }
 
 }
