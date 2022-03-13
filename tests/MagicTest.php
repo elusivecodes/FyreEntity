@@ -84,6 +84,74 @@ trait MagicTest
         );
     }
 
+    public function testArrayAccessSet(): void
+    {
+        $entity = new Entity();
+
+        $entity['test'] = 2;
+
+        $this->assertSame(
+            2,
+            $entity->get('test')
+        );
+    }
+
+    public function testArrayAccessGet(): void
+    {
+        $entity = new Entity();
+
+        $entity->set('test', 2);
+
+        $this->assertSame(
+            2,
+            $entity['test']
+        );
+    }
+
+    public function testArrayAccessIsset(): void
+    {
+        $entity = new Entity([
+            'test' => 2
+        ]);
+
+        $this->assertTrue(
+            isset($entity['test'])
+        );
+    }
+
+    public function testArrayAccessIssetEmpty(): void
+    {
+        $entity = new Entity([
+            'test' => ''
+        ]);
+
+        $this->assertTrue(
+            isset($entity['test'])
+        );
+    }
+
+    public function testArrayAccessIssetInvalid(): void
+    {
+        $entity = new Entity();
+
+        $this->assertFalse(
+            isset($entity['invalid'])
+        );
+    }
+
+    public function testArrayAccessUnset(): void
+    {
+        $entity = new Entity([
+            'test' => 2
+        ]);
+
+        unset($entity['test']);
+
+        $this->assertNull(
+            $entity->get('test')
+        );
+    }
+
     public function testToArray(): void
     {
         $entity = new Entity([

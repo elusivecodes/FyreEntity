@@ -131,10 +131,11 @@ Get a value from the entity.
 $value = $entity->get($field);
 ```
 
-Alternatively, you can get a value using the magic `__get` method.
+Alternatively, you can get a value using the magic `__get` method or array syntax.
 
 ```php
 $value = $entity->$field;
+$value = $entity[$field];
 ```
 
 If a `_getFieldName` method exists in the entity (where the field name is *field_name*), then that method will be called for the value being retrieved. The argument of that method will be the value stored in the entity, and the return value of that method will be returned instead.
@@ -247,10 +248,11 @@ Determine if an entity value is set.
 $has = $entity->has($field);
 ```
 
-Alternatively, you can determine if a value is set using the magic `__isset` method.
+Alternatively, you can determine if a value is set using the magic `__isset` method or array syntax.
 
 ```php
 $isset = isset($entity->$field);
+$isset = isset($entity[$field]);
 ```
 
 **Has Value**
@@ -335,10 +337,11 @@ Set an entity value.
 $entity->set($field, $value, $options);
 ```
 
-Alternatively, you can set a value using the magic `__set` method.
+Alternatively, you can set a value using the magic `__set` method or array syntax.
 
 ```php
 $entity->$field = $value;
+$entity[$field] = $value;
 ```
 
 If the `mutate` option is set to *true*, and a `_setFieldName` method exists in the entity (where the field name is *field_name*), then that method will be called for the value being set. The argument will be the value being populated, and the return value of that method will be stored in the entity instead.
@@ -474,8 +477,9 @@ Unset an entity value.
 $entity->unset($field);
 ```
 
-Alternatively, you can unset a value using the magic `__unset` method.
+Alternatively, you can unset a value using the magic `__unset` method or array syntax.
 
 ```php
 unset($entity->$field);
+unset($entity[$field]);
 ```
