@@ -124,7 +124,7 @@ trait FieldTrait
      * @param string $field The field name.
      * @return mixed The value.
      */
-    public function &get(string $field)
+    public function &get(string $field): mixed
     {
         $value = static::mutate('get', $field, $this->fields[$field] ?? null);
 
@@ -163,7 +163,7 @@ trait FieldTrait
      * @param string $field The field name.
      * @return mixed The value.
      */
-    public function getOriginal(string|null $field = null)
+    public function getOriginal(string|null $field = null): mixed
     {
         if (!$field) {
             return array_merge($this->original, $this->fields);
@@ -266,7 +266,7 @@ trait FieldTrait
      * @param array $options The options for setting the value.
      * @return Entity The Entity.
      */
-    public function set(string $field, $value, array $options = []): static
+    public function set(string $field, mixed $value, array $options = []): static
     {
         $options['guard'] ??= false;
         $options['mutate'] ??= true;
@@ -392,7 +392,7 @@ trait FieldTrait
      * @param mixed $value The value.
      * @return mixed The mutated value.
      */
-    protected function mutate(string $prefix, string $field, $value)
+    protected function mutate(string $prefix, string $field, mixed $value): mixed
     {
         if (static::class === Entity::class) {
             return $value;

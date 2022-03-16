@@ -67,7 +67,7 @@ class Entity implements ArrayAccess, JsonSerializable
      * @param string $field The field name.
      * @return mixed The value.
      */
-    public function &__get(string $field)
+    public function &__get(string $field): mixed
     {
         return $this->get($field);
     }
@@ -77,7 +77,7 @@ class Entity implements ArrayAccess, JsonSerializable
      * @param string $field The field name.
      * @param mixed $value The value.
      */
-    public function __set(string $field, $value): void
+    public function __set(string $field, mixed $value): void
     {
         $this->set($field, $value);
     }
@@ -153,39 +153,39 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Determine if an entity value is set.
-     * @param string $field The field name.
+     * @param mixed $field The field name.
      * @return bool TRUE if the value is set, otherwise FALSE.
      */
-    public function offsetExists($field): bool
+    public function offsetExists(mixed $field): bool
     {
         return $this->has($field);
     }
 
     /**
      * Get an entity value.
-     * @param string $field The field name.
+     * @param mixed $field The field name.
      * @return mixed The value.
      */
-    public function offsetGet($field)
+    public function offsetGet(mixed $field): mixed
     {
         return $this->get($field);
     }
 
     /**
      * Set an entity value.
-     * @param string $field The field name.
+     * @param mixed $field The field name.
      * @param mixed $value The value.
      */
-    public function offsetSet($field, $value): void
+    public function offsetSet(mixed $field, mixed $value): void
     {
         $this->set($field, $value);
     }
 
     /**
      * Unset an entity value.
-     * @param string $field The field name.
+     * @param mixed $field The field name.
      */
-    public function offsetUnset($field): void
+    public function offsetUnset(mixed $field): void
     {
         $this->unset($field);
     }

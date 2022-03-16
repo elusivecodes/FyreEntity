@@ -85,7 +85,7 @@ trait ErrorTrait
      * @param string|null $field The field name.
      * @return mixed The value.
      */
-    public function getInvalid(string|null $field = null)
+    public function getInvalid(string|null $field = null): mixed
     {
         if (!$field) {
             return $this->invalid;
@@ -158,7 +158,7 @@ trait ErrorTrait
      * @param bool $overwrite Whether to overwrite an existing value.
      * @return Entity The Entity.
      */
-    public function setInvalid(string $field, $value, bool $overwrite = true): static
+    public function setInvalid(string $field, mixed $value, bool $overwrite = true): static
     {
         if ($overwrite) {
             $this->invalid[$field] = $value;
@@ -174,7 +174,7 @@ trait ErrorTrait
      * @param mixed $value The value.
      * @return bool TRUE if the value has errors, otherwise FALSE.
      */
-    protected static function checkError($value): bool
+    protected static function checkError(mixed $value): bool
     {
         if ($value instanceof Entity) {
             return $value->hasErrors();
@@ -197,7 +197,7 @@ trait ErrorTrait
      * @param string|null $field The field name.
      * @return array The errors.
      */
-    protected static function readError($value, string|null $field = null): array
+    protected static function readError(mixed $value, string|null $field = null): array
     {
         if ($value instanceof Entity) {
             return $field ?
@@ -231,7 +231,7 @@ trait ErrorTrait
      * @param string $field The field name.
      * @return array The errors.
      */
-    protected static function readNestedErrors($value, string $field): array
+    protected static function readNestedErrors(mixed $value, string $field): array
     {
         $path = explode('.', $field);
 
