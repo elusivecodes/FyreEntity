@@ -71,11 +71,11 @@ trait ErrorTrait
         $diff = array_diff_key($this->fields, $this->errors);
 
         $fields = array_map(
-            fn($value) => static::readError($value),
+            fn(mixed $value): array => static::readError($value),
             $diff
         );
 
-        $field = array_filter($fields, fn($errors) => $errors !== []);
+        $field = array_filter($fields, fn(array $errors): bool => $errors !== []);
 
         return array_merge($this->errors, $fields);
     }
@@ -207,7 +207,7 @@ trait ErrorTrait
 
         if (is_array($value)) {
             $fields = array_map(
-                function($val) use ($field) {
+                function(mixed $val) use ($field): array {
                     if ($val instanceof Entity) {
                         return $field ?
                             $val->getError($field) :
@@ -219,7 +219,7 @@ trait ErrorTrait
                 $value
             );
 
-            return array_filter($fields, fn($errors) => $errors !== []);
+            return array_filter($fields, fn(array $errors): bool => $errors !== []);
         }
 
         return [];

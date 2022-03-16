@@ -224,11 +224,11 @@ class Entity implements ArrayAccess, JsonSerializable
         $fields = $this->getVisible();
 
         $values = array_map(
-            function($field) use ($convertObjects) {
+            function(string $field) use ($convertObjects): mixed {
                 $value = $this->get($field);
 
                 if ($value instanceof Entity) {
-                    return $value->toArray();
+                    return $value->toArray($convertObjects);
                 }
 
                 if ($convertObjects) {
@@ -243,9 +243,9 @@ class Entity implements ArrayAccess, JsonSerializable
 
                 if (is_array($value)) {
                     return array_map(
-                        function($val) {
+                        function(mixed $val) use ($convertObjects): mixed {
                             if ($val instanceof Entity) {
-                                return $val->toArray();
+                                return $val->toArray($convertObjects);
                             }
 
                             return $val;
