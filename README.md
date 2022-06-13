@@ -388,7 +388,7 @@ Set all errors for the entity.
 - `$overwrite` is a boolean indicating whether to overwrite existing errors, and will default to *false*.
 
 ```php
-$entity->setError($errors, $overwrite);
+$entity->setErrors($errors, $overwrite);
 ```
 
 **Set Hidden**
