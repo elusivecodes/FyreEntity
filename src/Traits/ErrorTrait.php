@@ -75,7 +75,7 @@ trait ErrorTrait
             $diff
         );
 
-        $field = array_filter($fields, fn(array $errors): bool => $errors !== []);
+        $fields = array_filter($fields, fn(array $errors): bool => $errors !== []);
 
         return array_merge($this->errors, $fields);
     }
