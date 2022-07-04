@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89ccb4868705e9daba7ca1bfe685c8b7",
+    "content-hash": "45610aac934b191b014ac022ff6830c6",
     "packages": [
         {
-            "name": "fyre/datetime",
-            "version": "v1.0.5",
+            "name": "fyre/inflector",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/elusivecodes/FyreDateTime.git",
-                "reference": "3b547189f379017f9faacc3e39a14d2ffc922d3c"
+                "url": "https://github.com/elusivecodes/FyreInflector.git",
+                "reference": "3b3d83480e2a2e0f62bf73a053cb7c97ddc09150"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elusivecodes/FyreDateTime/zipball/3b547189f379017f9faacc3e39a14d2ffc922d3c",
-                "reference": "3b547189f379017f9faacc3e39a14d2ffc922d3c",
+                "url": "https://api.github.com/repos/elusivecodes/FyreInflector/zipball/3b3d83480e2a2e0f62bf73a053cb7c97ddc09150",
+                "reference": "3b3d83480e2a2e0f62bf73a053cb7c97ddc09150",
                 "shasum": ""
             },
             "require-dev": {
@@ -26,7 +26,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Fyre\\DateTime\\": "src/"
+                    "Fyre\\Utility\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -39,12 +39,12 @@
                     "email": "elusivecodes@gmail.com"
                 }
             ],
-            "description": "A DateTime library.",
+            "description": "An inflection library.",
             "support": {
-                "issues": "https://github.com/elusivecodes/FyreDateTime/issues",
-                "source": "https://github.com/elusivecodes/FyreDateTime/tree/v1.0.5"
+                "issues": "https://github.com/elusivecodes/FyreInflector/issues",
+                "source": "https://github.com/elusivecodes/FyreInflector/tree/v1.0.4"
             },
-            "time": "2022-01-09T10:19:51+00:00"
+            "time": "2022-04-03T05:50:10+00:00"
         }
     ],
     "packages-dev": [
@@ -116,6 +116,46 @@
                 }
             ],
             "time": "2020-11-10T18:47:58+00:00"
+        },
+        {
+            "name": "fyre/datetime",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elusivecodes/FyreDateTime.git",
+                "reference": "3b547189f379017f9faacc3e39a14d2ffc922d3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elusivecodes/FyreDateTime/zipball/3b547189f379017f9faacc3e39a14d2ffc922d3c",
+                "reference": "3b547189f379017f9faacc3e39a14d2ffc922d3c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fyre\\DateTime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "elusivecodes",
+                    "email": "elusivecodes@gmail.com"
+                }
+            ],
+            "description": "A DateTime library.",
+            "support": {
+                "issues": "https://github.com/elusivecodes/FyreDateTime/issues",
+                "source": "https://github.com/elusivecodes/FyreDateTime/tree/v1.0.5"
+            },
+            "time": "2022-01-09T10:19:51+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2152,5 +2192,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

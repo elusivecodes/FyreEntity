@@ -8,6 +8,7 @@
 - [Entity Creation](#entity-creation)
 - [Methods](#methods)
 - [Mutations](#mutations)
+- [Entity Locator](#entity-locator)
 
 
 
@@ -482,4 +483,57 @@ Alternatively, you can unset a value using the magic `__unset` method or array s
 ```php
 unset($entity->$field);
 unset($entity[$field]);
+```
+
+
+## Entity Locator
+
+```php
+use Fyre\Entity\EntityLocator;
+```
+
+**Add Namespace**
+
+Add a namespace for locating entities.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+EntityLocator::addNamespace($namespace);
+```
+
+**Clear**
+
+Clear all namespaces and entities.
+
+```php
+EntityLocator::clear();
+```
+
+**Get Default Entity Class**
+
+Get the default entity class name.
+
+```php
+$defaultEntityClass = EntityLocator::getDefaultEntityClass();
+```
+
+**Find**
+
+Find the entity class name for an alias.
+
+- `$alias` is a string representing the alias.
+
+```php
+$className = EntityLocator::find($alias);
+```
+
+**Set Default Entity Class**
+
+Set the default entity class name.
+
+- `$defaultEntityClass` is a string representing the default entity class name.
+
+```php
+EntityLocator::setDefaultEntityClass($defaultEntityClass);
 ```
