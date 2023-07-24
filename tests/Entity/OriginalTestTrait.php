@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-trait OriginalTest
+trait OriginalTestTrait
 {
 
     public function testGetOriginal(): void

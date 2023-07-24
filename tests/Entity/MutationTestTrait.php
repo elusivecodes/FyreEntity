@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Tests\Mock\MockEntity;
+use Tests\Mock\MockEntity;
 
-trait MutationTest
+trait MutationTestTrait
 {
 
     public function testSetMutation(): void

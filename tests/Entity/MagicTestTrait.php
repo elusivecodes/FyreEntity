@@ -3,17 +3,14 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Fyre\DateTime\DateTime,
-    Fyre\Entity\Entity;
+use Fyre\DateTime\DateTime;
+use Fyre\Entity\Entity;
 
-use const
-    JSON_PRETTY_PRINT;
+use const JSON_PRETTY_PRINT;
 
-use function
-    json_encode;
+use function json_encode;
 
-trait MagicTest
+trait MagicTestTrait
 {
 
     public function testMagicSet(): void

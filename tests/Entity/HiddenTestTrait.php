@@ -3,70 +3,68 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-trait VirtualTest
+trait HiddenTestTrait
 {
 
-    public function testSetVirtual(): void
+    public function testSetHidden(): void
     {
         $entity = new Entity();
 
         $this->assertSame(
-            $entity->setVirtual(['test']),
-            $entity
+            $entity,
+            $entity->setHidden(['test'])
         );
 
         $this->assertSame(
             [
                 'test'
             ],
-            $entity->getVirtual()
+            $entity->getHidden()
         );
     }
 
-    public function testSetVirtualOverwrite(): void
+    public function testSetHiddenOverwrite(): void
     {
         $entity = new Entity();
 
-        $entity->setVirtual(['test1']);
-        $entity->setVirtual(['test2']);
+        $entity->setHidden(['test1']);
+        $entity->setHidden(['test2']);
 
         $this->assertSame(
             [
                 'test2'
             ],
-            $entity->getVirtual()
+            $entity->getHidden()
         );
     }
 
-    public function testSetVirtualMerge(): void
+    public function testSetHiddenMerge(): void
     {
         $entity = new Entity();
 
-        $entity->setVirtual(['test1']);
-        $entity->setVirtual(['test2'], true);
+        $entity->setHidden(['test1']);
+        $entity->setHidden(['test2'], true);
 
         $this->assertSame(
             [
                 'test1',
                 'test2'
             ],
-            $entity->getVirtual()
+            $entity->getHidden()
         );
     }
 
-    public function testSetVirtualVisible(): void
+    public function testSetHiddenNotVisible(): void
     {
         $entity = new Entity();
 
-        $entity->setVirtual(['test']);
+        $entity->set('test', 1);
+        $entity->setHidden(['test']);
 
         $this->assertSame(
-            [
-                'test'
-            ],
+            [],
             $entity->getVisible()
         );
     }

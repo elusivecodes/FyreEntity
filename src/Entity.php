@@ -2,23 +2,20 @@
 
 namespace Fyre\Entity;
 
-use
-    ArrayAccess,
-    Fyre\DateTime\DateTime,
-    Fyre\Entity\Traits\ErrorTrait,
-    Fyre\Entity\Traits\FieldTrait,
-    JsonSerializable;
+use ArrayAccess;
+use Fyre\DateTime\DateTime;
+use Fyre\Entity\Traits\ErrorTrait;
+use Fyre\Entity\Traits\FieldTrait;
+use JsonSerializable;
 
-use const
-    JSON_PRETTY_PRINT;
+use const JSON_PRETTY_PRINT;
 
-use function
-    array_combine,
-    array_map,
-    is_array,
-    is_object,
-    json_encode,
-    method_exists;
+use function array_combine;
+use function array_map;
+use function is_array;
+use function is_object;
+use function json_encode;
+use function method_exists;
 
 /**
  * Entity
@@ -30,9 +27,8 @@ class Entity implements ArrayAccess, JsonSerializable
 
     protected bool $new = false;
 
-    use
-        ErrorTrait,
-        FieldTrait;
+    use ErrorTrait;
+    use FieldTrait;
 
     /**
      * New Entity constructor.

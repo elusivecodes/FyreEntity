@@ -1,6 +1,6 @@
 # FyreEntity
 
-**FyreEntity** is a free, entity library for *PHP*.
+**FyreEntity** is a free, open-source entity library for *PHP*.
 
 
 ## Table Of Contents
@@ -510,14 +510,6 @@ Clear all namespaces and entities.
 EntityLocator::clear();
 ```
 
-**Get Default Entity Class**
-
-Get the default entity class name.
-
-```php
-$defaultEntityClass = EntityLocator::getDefaultEntityClass();
-```
-
 **Find**
 
 Find the entity class name for an alias.
@@ -526,6 +518,42 @@ Find the entity class name for an alias.
 
 ```php
 $className = EntityLocator::find($alias);
+```
+
+**Get Default Entity Class**
+
+Get the default entity class name.
+
+```php
+$defaultEntityClass = EntityLocator::getDefaultEntityClass();
+```
+
+**Get Namespaces**
+
+Get the namespaces.
+
+```php
+$namespaces = EntityLocator::getNamespaces();
+```
+
+**Has Namespace**
+
+Check if a namespace exists.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+$hasNamespace = EntityLocator::hasNamespace($namespace);
+```
+
+**Remove Namespace**
+
+Remove a namespace.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+$removed = EntityLocator::removeNamespace($namespace);
 ```
 
 **Set Default Entity Class**

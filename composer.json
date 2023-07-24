@@ -20,10 +20,10 @@
         }
     },
     "require": {
-        "fyre/inflector": "^1.0"
+        "fyre/inflector": "^2.0"
     },
     "require-dev": {
-        "fyre/datetime": "^1.0",
-        "phpunit/phpunit": "^9"
+        "fyre/datetime": "^2.0",
+        "phpunit/phpunit": "^10"
     }
 }

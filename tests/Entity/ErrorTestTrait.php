@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-trait ErrorTest
+trait ErrorTestTrait
 {
 
     public function testSetError(): void

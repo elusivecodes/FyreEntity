@@ -2,20 +2,18 @@
 
 namespace Fyre\Entity\Traits;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-use function
-    array_diff,
-    array_key_exists,
-    array_keys,
-    array_merge,
-    array_unique,
-    in_array,
-    lcfirst,
-    method_exists,
-    str_replace,
-    ucwords;
+use function array_diff;
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function array_unique;
+use function in_array;
+use function lcfirst;
+use function method_exists;
+use function str_replace;
+use function ucwords;
 
 /**
  * FieldTrait

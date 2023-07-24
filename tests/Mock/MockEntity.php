@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace Tests\Mock;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-use function
-    floor,
-    number_format;
+use function floor;
+use function number_format;
 
 class MockEntity extends Entity
 {

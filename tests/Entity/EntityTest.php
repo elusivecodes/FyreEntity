@@ -3,24 +3,22 @@ declare(strict_types=1);
 
 namespace Tests\Entity;
 
-use
-    Fyre\Entity\Entity,
-    PHPUnit\Framework\TestCase;
+use Fyre\Entity\Entity;
+use PHPUnit\Framework\TestCase;
 
 final class EntityTest extends TestCase
 {
 
-    use
-        AccessTest,
-        DirtyTest,
-        ErrorTest,
-        FieldTest,
-        HiddenTest,
-        InvalidTest,
-        MagicTest,
-        MutationTest,
-        OriginalTest,
-        VirtualTest;
+    use AccessTestTrait;
+    use DirtyTestTrait;
+    use ErrorTestTrait;
+    use FieldTestTrait;
+    use HiddenTestTrait;
+    use InvalidTestTrait;
+    use MagicTestTrait;
+    use MutationTestTrait;
+    use OriginalTestTrait;
+    use VirtualTestTrait;
 
     public function testEntityData(): void
     {

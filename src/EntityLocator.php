@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Fyre\Entity;
 
-use
-    Fyre\Utility\Inflector;
+use Fyre\Utility\Inflector;
 
-use function
-    class_exists,
-    in_array,
-    is_subclass_of,
-    trim;
+use function array_splice;
+use function class_exists;
+use function in_array;
+use function is_subclass_of;
+use function trim;
 
 /**
  * EntityLocator
@@ -47,6 +46,16 @@ abstract class EntityLocator
     }
 
     /**
+     * Find the entity class name for an alias.
+     * @param string $alias The alias.
+     * @return string The entity class name.
+     */
+    public static function find(string $alias): string
+    {
+        return static::$entities[$alias] ??= static::locate($alias);
+    }
+
+    /**
      * Get the default entity class name.
      * @return string The default entity class name.
      */
@@ -56,13 +65,46 @@ abstract class EntityLocator
     }
 
     /**
-     * Find the entity class name for an alias.
-     * @param string $alias The alias.
-     * @return string The entity class name.
+     * Get the namespaces.
+     * @return array The namespaces.
      */
-    public static function find(string $alias): string
+    public static function getNamespaces(): array
     {
-        return static::$entities[$alias] ??= static::locate($alias);
+        return static::$namespaces;
+    }
+
+    /**
+     * Determine if a namespace exists.
+     * @param string $namespace The namespace.
+     * @return bool TRUE if the namespace exists, otherwise FALSE.
+     */
+    public static function hasNamespace(string $namespace): bool
+    {
+        $namespace = static::normalizeNamespace($namespace);
+
+        return in_array($namespace, static::$namespaces);
+    }
+
+    /**
+     * Remove a namespace.
+     * @param string $namespace The namespace.
+     * @return bool TRUE If the namespace was removed, otherwise FALSE.
+     */
+    public static function removeNamespace(string $namespace): bool
+    {
+        $namespace = static::normalizeNamespace($namespace);
+
+        foreach (static::$namespaces AS $i => $otherNamespace) {
+            if ($otherNamespace !== $namespace) {
+                continue;
+            }
+
+            array_splice(static::$namespaces, $i, 1);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

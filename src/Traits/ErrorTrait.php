@@ -2,20 +2,18 @@
 
 namespace Fyre\Entity\Traits;
 
-use
-    Fyre\Entity\Entity;
+use Fyre\Entity\Entity;
 
-use function
-    array_diff_key,
-    array_filter,
-    array_key_exists,
-    array_map,
-    array_merge,
-    array_shift,
-    count,
-    explode,
-    is_array,
-    strpos;
+use function array_diff_key;
+use function array_filter;
+use function array_key_exists;
+use function array_map;
+use function array_merge;
+use function array_shift;
+use function count;
+use function explode;
+use function is_array;
+use function strpos;
 
 /**
  * ErrorTrait
