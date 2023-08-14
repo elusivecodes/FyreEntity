@@ -11,17 +11,17 @@ use function number_format;
 class MockEntity extends Entity
 {
 
-    protected function _getDecimal($value)
+    protected function _getDecimal($value): string
     {
         return number_format($value ?? 0, 2);
     }
 
-    protected function _getNumber()
+    protected function _getNumber(): float
     {
         return $this->get('integer');
     }
 
-    protected function _setInteger($value)
+    protected function _setInteger($value): float
     {
         return floor($value);
     }
