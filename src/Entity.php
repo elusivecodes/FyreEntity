@@ -162,7 +162,7 @@ class Entity implements ArrayAccess, JsonSerializable
      * @param mixed $field The field name.
      * @return mixed The value.
      */
-    public function offsetGet(mixed $field): mixed
+    public function &offsetGet(mixed $field): mixed
     {
         return $this->get($field);
     }

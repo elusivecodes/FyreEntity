@@ -124,7 +124,13 @@ trait FieldTrait
      */
     public function &get(string $field): mixed
     {
-        $value = static::mutate('get', $field, $this->fields[$field] ?? null);
+        $value = &$this->fields[$field] ?? null;
+
+        $method = static::mutateMethod($field, 'get');
+
+        if ($method) {
+            $value = $this->$method($value);
+        }
 
         return $value;
     }
@@ -274,7 +280,11 @@ trait FieldTrait
         }
 
         if ($options['mutate']) {
-            $value = static::mutate('set', $field, $value);
+            $method = static::mutateMethod($field, 'set');
+
+            if ($method) {
+                $value = $this->$method($value);
+            }
         }
 
         $hasField = array_key_exists($field, $this->fields);
@@ -384,27 +394,26 @@ trait FieldTrait
     }
 
     /**
-     * Mutate a value.
-     * @param string $prefix The method prefix.
+     * Get the mutation method for a field.
      * @param string $field The field name.
-     * @param mixed $value The value.
-     * @return mixed The mutated value.
+     * @param string $prefix The method prefix.
+     * @return string|null The mutation method.
      */
-    protected function mutate(string $prefix, string $field, mixed $value): mixed
+    protected static function mutateMethod(string $field, string $prefix): string|null
     {
         if (static::class === Entity::class) {
-            return $value;
+            return null;
         }
 
         $method = ucwords($prefix.'_'.$field, '_');
         $method = str_replace('_', '', $method);
         $method = '_'.lcfirst($method);
 
-        if (!method_exists($this, $method)) {
-            return $value;
+        if (!method_exists(static::class, $method)) {
+            return null;
         }
 
-        return $this->$method($value);
+        return $method;
     }
 
 }
