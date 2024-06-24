@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class EntityTest extends TestCase
 {
-
     use AccessTestTrait;
     use DirtyTestTrait;
     use ErrorTestTrait;
@@ -19,6 +18,16 @@ final class EntityTest extends TestCase
     use MutationTestTrait;
     use OriginalTestTrait;
     use VirtualTestTrait;
+
+    public function testClean(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->clean()
+        );
+    }
 
     public function testEntityData(): void
     {
@@ -44,13 +53,12 @@ final class EntityTest extends TestCase
         );
     }
 
-    public function testEntitySource(): void
+    public function testEntityNotClean(): void
     {
-        $entity = new Entity([], ['source' => 'test']);
+        $entity = new Entity(['a' => 1], ['clean' => false]);
 
-        $this->assertSame(
-            'test',
-            $entity->getSource()
+        $this->assertTrue(
+            $entity->isDirty()
         );
     }
 
@@ -63,12 +71,17 @@ final class EntityTest extends TestCase
         );
     }
 
-    public function testEntityNotClean(): void
+    public function testEntitySetNew(): void
     {
-        $entity = new Entity(['a' => 1], ['clean' => false]);
+        $entity = new Entity();
 
-        $this->assertTrue(
-            $entity->isDirty()
+        $this->assertSame(
+            $entity,
+            $entity->setNew(false)
+        );
+
+        $this->assertFalse(
+            $entity->isNew()
         );
     }
 
@@ -87,28 +100,13 @@ final class EntityTest extends TestCase
         );
     }
 
-    public function testEntitySetNew(): void
+    public function testEntitySource(): void
     {
-        $entity = new Entity();
+        $entity = new Entity([], ['source' => 'test']);
 
         $this->assertSame(
-            $entity,
-            $entity->setNew(false)
-        );
-
-        $this->assertFalse(
-            $entity->isNew()
+            'test',
+            $entity->getSource()
         );
     }
-
-    public function testClean(): void
-    {
-        $entity = new Entity();
-
-        $this->assertSame(
-            $entity,
-            $entity->clean()
-        );
-    }
-
 }

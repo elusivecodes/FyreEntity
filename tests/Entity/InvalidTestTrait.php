@@ -7,44 +7,14 @@ use Fyre\Entity\Entity;
 
 trait InvalidTestTrait
 {
-
-    public function testSetInvalid(): void
-    {
-        $entity = new Entity();
-
-        $this->assertSame(
-            $entity,
-            $entity->setInvalid('test', 1)
-        );
-
-        $this->assertSame(
-            1,
-            $entity->getInvalid('test')
-        );
-    }
-
-    public function testSetInvalidOverwrite(): void
+    public function testCleanInvalid(): void
     {
         $entity = new Entity();
 
         $entity->setInvalid('test', 1);
-        $entity->setInvalid('test', 2);
+        $entity->clean();
 
-        $this->assertSame(
-            2,
-            $entity->getInvalid('test')
-        );
-    }
-
-    public function testSetInvalidNotOverwrite(): void
-    {
-        $entity = new Entity();
-
-        $entity->setInvalid('test', 1);
-        $entity->setInvalid('test', 2, false);
-
-        $this->assertSame(
-            1,
+        $this->assertNull(
             $entity->getInvalid('test')
         );
     }
@@ -59,6 +29,21 @@ trait InvalidTestTrait
                 'test' => 1
             ])
         );
+
+        $this->assertSame(
+            1,
+            $entity->getInvalid('test')
+        );
+    }
+
+    public function testFillInvalidNotOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setInvalid('test', 1);
+        $entity->fillInvalid([
+            'test' => 2
+        ]);
 
         $this->assertSame(
             1,
@@ -81,14 +66,26 @@ trait InvalidTestTrait
         );
     }
 
-    public function testFillInvalidNotOverwrite(): void
+    public function testGetInvalidArray(): void
     {
         $entity = new Entity();
 
         $entity->setInvalid('test', 1);
-        $entity->fillInvalid([
-            'test' => 2
-        ]);
+
+        $this->assertSame(
+            [
+                'test' => 1
+            ],
+            $entity->getInvalid()
+        );
+    }
+
+    public function testGetInvalidClean(): void
+    {
+        $entity = new Entity();
+
+        $entity->setInvalid('test', 1);
+        $entity->setDirty('test', false);
 
         $this->assertSame(
             1,
@@ -108,33 +105,6 @@ trait InvalidTestTrait
         );
     }
 
-    public function testGetInvalidClean(): void
-    {
-        $entity = new Entity();
-
-        $entity->setInvalid('test', 1);
-        $entity->setDirty('test', false);
-
-        $this->assertSame(
-            1,
-            $entity->getInvalid('test')
-        );
-    }
-
-    public function testGetInvalidArray(): void
-    {
-        $entity = new Entity();
-
-        $entity->setInvalid('test', 1);
-
-        $this->assertSame(
-            [
-                'test' => 1
-            ],
-            $entity->getInvalid()
-        );
-    }
-
     public function testGetInvalidInvalid(): void
     {
         $entity = new Entity();
@@ -144,16 +114,44 @@ trait InvalidTestTrait
         );
     }
 
-    public function testCleanInvalid(): void
+    public function testSetInvalid(): void
     {
         $entity = new Entity();
 
-        $entity->setInvalid('test', 1);
-        $entity->clean();
+        $this->assertSame(
+            $entity,
+            $entity->setInvalid('test', 1)
+        );
 
-        $this->assertNull(
+        $this->assertSame(
+            1,
             $entity->getInvalid('test')
         );
     }
 
+    public function testSetInvalidNotOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setInvalid('test', 1);
+        $entity->setInvalid('test', 2, false);
+
+        $this->assertSame(
+            1,
+            $entity->getInvalid('test')
+        );
+    }
+
+    public function testSetInvalidOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setInvalid('test', 1);
+        $entity->setInvalid('test', 2);
+
+        $this->assertSame(
+            2,
+            $entity->getInvalid('test')
+        );
+    }
 }

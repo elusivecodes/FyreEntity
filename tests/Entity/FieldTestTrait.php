@@ -7,28 +7,54 @@ use Fyre\Entity\Entity;
 
 trait FieldTestTrait
 {
-
-    public function testSet(): void
+    public function testClear(): void
     {
-        $entity = new Entity();
+        $entity = new Entity([
+            'test1' => 2,
+            'test2' => 3
+        ]);
 
         $this->assertSame(
             $entity,
-            $entity->set('test', 2)
+            $entity->clear(['test1'])
+        );
+
+        $this->assertNull(
+            $entity->get('test1')
         );
 
         $this->assertSame(
-            2,
-            $entity->get('test')
+            3,
+            $entity->get('test2')
         );
     }
 
-    public function testGetInvalid(): void
+    public function testExtract(): void
+    {
+        $entity = new Entity([
+            'test1' => 1,
+            'test2' => 2,
+            'test3' => 3
+        ]);
+
+        $this->assertSame(
+            [
+                'test2' => 2,
+                'test3' => 3
+            ],
+            $entity->extract(['test2', 'test3'])
+        );
+    }
+
+    public function testExtractInvalid(): void
     {
         $entity = new Entity();
 
-        $this->assertNull(
-            $entity->get('invalid')
+        $this->assertSame(
+            [
+                'invalid' => null
+            ],
+            $entity->extract(['invalid'])
         );
     }
 
@@ -52,6 +78,15 @@ trait FieldTestTrait
         $this->assertSame(
             3,
             $entity->get('test2')
+        );
+    }
+
+    public function testGetInvalid(): void
+    {
+        $entity = new Entity();
+
+        $this->assertNull(
+            $entity->get('invalid')
         );
     }
 
@@ -170,6 +205,21 @@ trait FieldTestTrait
         );
     }
 
+    public function testSet(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->set('test', 2)
+        );
+
+        $this->assertSame(
+            2,
+            $entity->get('test')
+        );
+    }
+
     public function testUnset(): void
     {
         $entity = new Entity([
@@ -185,56 +235,4 @@ trait FieldTestTrait
             $entity->get('test')
         );
     }
-
-    public function testClear(): void
-    {
-        $entity = new Entity([
-            'test1' => 2,
-            'test2' => 3
-        ]);
-
-        $this->assertSame(
-            $entity,
-            $entity->clear(['test1'])
-        );
-
-        $this->assertNull(
-            $entity->get('test1')
-        );
-
-        $this->assertSame(
-            3,
-            $entity->get('test2')
-        );
-    }
-
-    public function testExtract(): void
-    {
-        $entity = new Entity([
-            'test1' => 1,
-            'test2' => 2,
-            'test3' => 3
-        ]);
-
-        $this->assertSame(
-            [
-                'test2' => 2,
-                'test3' => 3
-            ],
-            $entity->extract(['test2', 'test3'])
-        );
-    }
-
-    public function testExtractInvalid(): void
-    {
-        $entity = new Entity();
-
-        $this->assertSame(
-            [
-                'invalid' => null
-            ],
-            $entity->extract(['invalid'])
-        );
-    }
-
 }

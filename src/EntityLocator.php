@@ -16,12 +16,9 @@ use function trim;
  */
 abstract class EntityLocator
 {
-
     protected static string $defaultEntityClass = Entity::class;
-
-    protected static array $namespaces = [];
-
     protected static array $entities = [];
+    protected static array $namespaces = [];
 
     /**
      * Add a namespace for locating entities.
@@ -94,7 +91,7 @@ abstract class EntityLocator
     {
         $namespace = static::normalizeNamespace($namespace);
 
-        foreach (static::$namespaces AS $i => $otherNamespace) {
+        foreach (static::$namespaces as $i => $otherNamespace) {
             if ($otherNamespace !== $namespace) {
                 continue;
             }
@@ -125,7 +122,7 @@ abstract class EntityLocator
     {
         $alias = Inflector::singularize($alias);
 
-        foreach (static::$namespaces AS $namespace) {
+        foreach (static::$namespaces as $namespace) {
             $fullClass = $namespace.$alias;
 
             if (class_exists($fullClass) && is_subclass_of($fullClass, Entity::class)) {
@@ -149,5 +146,4 @@ abstract class EntityLocator
             '\\'.$namespace.'\\' :
             '\\';
     }
-
 }

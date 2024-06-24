@@ -7,63 +7,27 @@ use Fyre\Entity\Entity;
 
 trait DirtyTestTrait
 {
-
-    public function testSetDirty(): void
+    public function testCleanDirty(): void
     {
         $entity = new Entity();
 
-        $this->assertSame(
-            $entity,
-            $entity->setDirty('test')
-        );
-
-        $this->assertTrue(
-            $entity->isDirty('test')
-        );
-    }
-
-    public function testSetDirtyFalse(): void
-    {
-        $entity = new Entity();
-
-        $entity->set('test', 2);
-        $entity->setDirty('test', false);
+        $entity->setDirty('test');
+        $entity->clean();
 
         $this->assertFalse(
             $entity->isDirty('test')
         );
     }
 
-    public function testIsDirtyFromSet(): void
+    public function testClearDirty(): void
     {
         $entity = new Entity();
 
-        $entity->set('test', 2);
-
-        $this->assertTrue(
-            $entity->isDirty('test')
-        );
-    }
-
-    public function testIsDirtyFalseSetSameValue(): void
-    {
-        $entity = new Entity([
-            'test' => 2
-        ]);
-
-        $entity->set('test', 2);
+        $entity->setDirty('test');
+        $entity->clear(['test']);
 
         $this->assertFalse(
             $entity->isDirty('test')
-        );
-    }
-
-    public function testIsDirtyInvalid(): void
-    {
-        $entity = new Entity();
-
-        $this->assertFalse(
-            $entity->isDirty('invalid')
         );
     }
 
@@ -103,6 +67,65 @@ trait DirtyTestTrait
         );
     }
 
+    public function testIsDirtyFalseSetSameValue(): void
+    {
+        $entity = new Entity([
+            'test' => 2
+        ]);
+
+        $entity->set('test', 2);
+
+        $this->assertFalse(
+            $entity->isDirty('test')
+        );
+    }
+
+    public function testIsDirtyFromSet(): void
+    {
+        $entity = new Entity();
+
+        $entity->set('test', 2);
+
+        $this->assertTrue(
+            $entity->isDirty('test')
+        );
+    }
+
+    public function testIsDirtyInvalid(): void
+    {
+        $entity = new Entity();
+
+        $this->assertFalse(
+            $entity->isDirty('invalid')
+        );
+    }
+
+    public function testSetDirty(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->setDirty('test')
+        );
+
+        $this->assertTrue(
+            $entity->isDirty('test')
+        );
+    }
+
+    public function testSetDirtyFalse(): void
+    {
+        $entity = new Entity();
+
+        $entity->set('test', 2);
+        $entity->setDirty('test', false);
+
+        $this->assertFalse(
+            $entity->isDirty('test')
+        );
+    }
+
     public function testUnsetDirty(): void
     {
         $entity = new Entity();
@@ -114,29 +137,4 @@ trait DirtyTestTrait
             $entity->isDirty('test')
         );
     }
-
-    public function testClearDirty(): void
-    {
-        $entity = new Entity();
-
-        $entity->setDirty('test');
-        $entity->clear(['test']);
-
-        $this->assertFalse(
-            $entity->isDirty('test')
-        );
-    }
-
-    public function testCleanDirty(): void
-    {
-        $entity = new Entity();
-
-        $entity->setDirty('test');
-        $entity->clean();
-
-        $this->assertFalse(
-            $entity->isDirty('test')
-        );
-    }
-
 }

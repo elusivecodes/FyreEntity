@@ -20,9 +20,7 @@ use function strpos;
  */
 trait ErrorTrait
 {
-
     protected array $errors = [];
-
     protected array $invalid = [];
 
     /**
@@ -33,7 +31,7 @@ trait ErrorTrait
      */
     public function fillInvalid(array $data, bool $overwrite = false): static
     {
-        foreach ($data AS $field => $value) {
+        foreach ($data as $field => $value) {
             $this->setInvalid($field, $value, $overwrite);
         }
 
@@ -107,7 +105,7 @@ trait ErrorTrait
             return false;
         }
 
-        foreach ($this->fields AS $value) {
+        foreach ($this->fields as $value) {
             if (static::checkError($value)) {
                 return true;
             }
@@ -123,7 +121,7 @@ trait ErrorTrait
      * @param bool $overwrite Whether to overwrite existing errors.
      * @return Entity The Entity.
      */
-    public function setError(string $field, string|array $error, bool $overwrite = false): static
+    public function setError(string $field, array|string $error, bool $overwrite = false): static
     {
         return $this->setErrors([$field => $error], $overwrite);
     }
@@ -135,7 +133,7 @@ trait ErrorTrait
      */
     public function setErrors(array $errors, bool $overwrite = false): static
     {
-        foreach ($errors AS $field => $error) {
+        foreach ($errors as $field => $error) {
             $error = (array) $error;
 
             if ($overwrite) {
@@ -179,7 +177,7 @@ trait ErrorTrait
         }
 
         if (is_array($value)) {
-            foreach ($value AS $val) {
+            foreach ($value as $val) {
                 if (static::checkError($val)) {
                     return true;
                 }
@@ -235,7 +233,7 @@ trait ErrorTrait
 
         while (count($path) > 1) {
             $segment = array_shift($path);
-    
+
             if ($value instanceof Entity) {
                 $value = $value->get($segment);
             } else {
@@ -251,5 +249,4 @@ trait ErrorTrait
 
         return static::readError($value, $field);
     }
-
 }

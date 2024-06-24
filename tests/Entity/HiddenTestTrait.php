@@ -7,7 +7,6 @@ use Fyre\Entity\Entity;
 
 trait HiddenTestTrait
 {
-
     public function testSetHidden(): void
     {
         $entity = new Entity();
@@ -20,21 +19,6 @@ trait HiddenTestTrait
         $this->assertSame(
             [
                 'test'
-            ],
-            $entity->getHidden()
-        );
-    }
-
-    public function testSetHiddenOverwrite(): void
-    {
-        $entity = new Entity();
-
-        $entity->setHidden(['test1']);
-        $entity->setHidden(['test2']);
-
-        $this->assertSame(
-            [
-                'test2'
             ],
             $entity->getHidden()
         );
@@ -69,4 +53,18 @@ trait HiddenTestTrait
         );
     }
 
+    public function testSetHiddenOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setHidden(['test1']);
+        $entity->setHidden(['test2']);
+
+        $this->assertSame(
+            [
+                'test2'
+            ],
+            $entity->getHidden()
+        );
+    }
 }

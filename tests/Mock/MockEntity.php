@@ -10,7 +10,6 @@ use function number_format;
 
 class MockEntity extends Entity
 {
-
     protected function _getDecimal($value): string
     {
         return number_format($value ?? 0, 2);
@@ -25,5 +24,4 @@ class MockEntity extends Entity
     {
         return floor($value);
     }
-
 }

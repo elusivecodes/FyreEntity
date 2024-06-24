@@ -7,178 +7,16 @@ use Fyre\Entity\Entity;
 
 trait ErrorTestTrait
 {
-
-    public function testSetError(): void
-    {
-        $entity = new Entity();
-
-        $this->assertSame(
-            $entity,
-            $entity->setError('test', 'error')
-        );
-
-        $this->assertSame(
-            [
-                'error'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrorArray(): void
-    {
-        $entity = new Entity();
-
-        $entity->setError('test', [
-            'error1',
-            'error2'
-        ]);
-
-        $this->assertSame(
-            [
-                'error1',
-                'error2'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrorOverwrite(): void
-    {
-        $entity = new Entity();
-
-        $entity->setError('test', 'error1');
-        $entity->setError('test', 'error2', true);
-
-        $this->assertSame(
-            [
-                'error2'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrorMerge(): void
-    {
-        $entity = new Entity();
-
-        $entity->setError('test', 'error1');
-        $entity->setError('test', 'error2');
-
-        $this->assertSame(
-            [
-                'error1',
-                'error2'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrors(): void
-    {
-        $entity = new Entity();
-
-        $this->assertSame(
-            $entity,
-            $entity->setErrors([
-                'test' => 'error'
-            ])
-        );
-
-        $this->assertSame(
-            [
-                'error'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrorsOverwrite(): void
-    {
-        $entity = new Entity();
-
-        $entity->setErrors([
-            'test' => 'error1'
-        ]);
-
-        $entity->setErrors([
-            'test' => 'error2'
-        ], true);
-
-        $this->assertSame(
-            [
-                'error2'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testSetErrorsMerge(): void
-    {
-        $entity = new Entity();
-
-        $entity->setErrors([
-            'test' => 'error1'
-        ]);
-
-        $entity->setErrors([
-            'test' => 'error2'
-        ]);
-
-        $this->assertSame(
-            [
-                'error1',
-                'error2'
-            ],
-            $entity->getError('test')
-        );
-    }
-
-    public function testHasErrors(): void
+    public function testCleanErrors(): void
     {
         $entity = new Entity();
 
         $entity->setError('test', 'error');
+        $entity->clean();
 
-        $this->assertTrue(
-            $entity->hasErrors()
-        );
-    }
-
-    public function testHasErrorsFalse(): void
-    {
-        $entity = new Entity();
-
-        $this->assertFalse(
-            $entity->hasErrors()
-        );
-    }
-
-    public function testHasErrorsDeep(): void
-    {
-        $child = new Entity();
-        $parent = new Entity([
-            'child' => $child
-        ]);
-
-        $child->setError('test', 'error');
-
-        $this->assertTrue(
-            $parent->hasErrors()
-        );
-    }
-
-    public function testHasErrorsNested(): void
-    {
-        $child = new Entity();
-        $parent = new Entity([
-            'children' => [$child]
-        ]);
-
-        $child->setError('test', 'error');
-
-        $this->assertTrue(
-            $parent->hasErrors()
+        $this->assertSame(
+            [],
+            $entity->getError('test')
         );
     }
 
@@ -201,24 +39,18 @@ trait ErrorTestTrait
         );
     }
 
-    public function testGetErrorNestedChild(): void
+    public function testGetErrorClean(): void
     {
-        $child = new Entity();
-        $parent = new Entity([
-            'children' => [$child]
-        ]);
+        $entity = new Entity();
 
-        $child->setError('test', 'error');
+        $entity->setError('test', 'error');
+        $entity->setDirty('test', false);
 
         $this->assertSame(
             [
-                [
-                    'test' => [
-                        'error'
-                    ]
-                ]
+                'error'
             ],
-            $parent->getError('children')
+            $entity->getError('test')
         );
     }
 
@@ -239,6 +71,19 @@ trait ErrorTestTrait
         );
     }
 
+    public function testGetErrorDirty(): void
+    {
+        $entity = new Entity();
+
+        $entity->setError('test', 'error');
+        $entity->setDirty('test');
+
+        $this->assertSame(
+            [],
+            $entity->getError('test')
+        );
+    }
+
     public function testGetErrorNested(): void
     {
         $child = new Entity();
@@ -253,6 +98,27 @@ trait ErrorTestTrait
                 'error'
             ],
             $parent->getError('children.0.test')
+        );
+    }
+
+    public function testGetErrorNestedChild(): void
+    {
+        $child = new Entity();
+        $parent = new Entity([
+            'children' => [$child]
+        ]);
+
+        $child->setError('test', 'error');
+
+        $this->assertSame(
+            [
+                [
+                    'test' => [
+                        'error'
+                    ]
+                ]
+            ],
+            $parent->getError('children')
         );
     }
 
@@ -316,25 +182,62 @@ trait ErrorTestTrait
         );
     }
 
-    public function testGetErrorDirty(): void
+    public function testHasErrors(): void
     {
         $entity = new Entity();
 
         $entity->setError('test', 'error');
-        $entity->setDirty('test');
 
-        $this->assertSame(
-            [],
-            $entity->getError('test')
+        $this->assertTrue(
+            $entity->hasErrors()
         );
     }
 
-    public function testGetErrorClean(): void
+    public function testHasErrorsDeep(): void
+    {
+        $child = new Entity();
+        $parent = new Entity([
+            'child' => $child
+        ]);
+
+        $child->setError('test', 'error');
+
+        $this->assertTrue(
+            $parent->hasErrors()
+        );
+    }
+
+    public function testHasErrorsFalse(): void
     {
         $entity = new Entity();
 
-        $entity->setError('test', 'error');
-        $entity->setDirty('test', false);
+        $this->assertFalse(
+            $entity->hasErrors()
+        );
+    }
+
+    public function testHasErrorsNested(): void
+    {
+        $child = new Entity();
+        $parent = new Entity([
+            'children' => [$child]
+        ]);
+
+        $child->setError('test', 'error');
+
+        $this->assertTrue(
+            $parent->hasErrors()
+        );
+    }
+
+    public function testSetError(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->setError('test', 'error')
+        );
 
         $this->assertSame(
             [
@@ -344,17 +247,112 @@ trait ErrorTestTrait
         );
     }
 
-    public function testCleanErrors(): void
+    public function testSetErrorArray(): void
     {
         $entity = new Entity();
 
-        $entity->setError('test', 'error');
-        $entity->clean();
+        $entity->setError('test', [
+            'error1',
+            'error2'
+        ]);
 
         $this->assertSame(
-            [],
+            [
+                'error1',
+                'error2'
+            ],
             $entity->getError('test')
         );
     }
 
+    public function testSetErrorMerge(): void
+    {
+        $entity = new Entity();
+
+        $entity->setError('test', 'error1');
+        $entity->setError('test', 'error2');
+
+        $this->assertSame(
+            [
+                'error1',
+                'error2'
+            ],
+            $entity->getError('test')
+        );
+    }
+
+    public function testSetErrorOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setError('test', 'error1');
+        $entity->setError('test', 'error2', true);
+
+        $this->assertSame(
+            [
+                'error2'
+            ],
+            $entity->getError('test')
+        );
+    }
+
+    public function testSetErrors(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->setErrors([
+                'test' => 'error'
+            ])
+        );
+
+        $this->assertSame(
+            [
+                'error'
+            ],
+            $entity->getError('test')
+        );
+    }
+
+    public function testSetErrorsMerge(): void
+    {
+        $entity = new Entity();
+
+        $entity->setErrors([
+            'test' => 'error1'
+        ]);
+
+        $entity->setErrors([
+            'test' => 'error2'
+        ]);
+
+        $this->assertSame(
+            [
+                'error1',
+                'error2'
+            ],
+            $entity->getError('test')
+        );
+    }
+
+    public function testSetErrorsOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setErrors([
+            'test' => 'error1'
+        ]);
+
+        $entity->setErrors([
+            'test' => 'error2'
+        ], true);
+
+        $this->assertSame(
+            [
+                'error2'
+            ],
+            $entity->getError('test')
+        );
+    }
 }

@@ -8,8 +8,6 @@ use Fyre\Entity\Traits\ErrorTrait;
 use Fyre\Entity\Traits\FieldTrait;
 use JsonSerializable;
 
-use const JSON_PRETTY_PRINT;
-
 use function array_combine;
 use function array_map;
 use function is_array;
@@ -17,18 +15,18 @@ use function is_object;
 use function json_encode;
 use function method_exists;
 
+use const JSON_PRETTY_PRINT;
+
 /**
  * Entity
  */
 class Entity implements ArrayAccess, JsonSerializable
 {
-
-    protected string|null $source = null;
-
-    protected bool $new = false;
-
     use ErrorTrait;
     use FieldTrait;
+
+    protected bool $new = false;
+    protected string|null $source = null;
 
     /**
      * New Entity constructor.
@@ -59,13 +57,13 @@ class Entity implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * Get an entity value.
+     * Determine if an entity value is set.
      * @param string $field The field name.
-     * @return mixed The value.
+     * @return bool TRUE if the value is set, otherwise FALSE.
      */
-    public function &__get(string $field): mixed
+    public function __isset(string $field): bool
     {
-        return $this->get($field);
+        return $this->has($field);
     }
 
     /**
@@ -76,16 +74,6 @@ class Entity implements ArrayAccess, JsonSerializable
     public function __set(string $field, mixed $value): void
     {
         $this->set($field, $value);
-    }
-
-    /**
-     * Determine if an entity value is set.
-     * @param string $field The field name.
-     * @return bool TRUE if the value is set, otherwise FALSE.
-     */
-    public function __isset(string $field): bool
-    {
-        return $this->has($field);
     }
 
     /**
@@ -104,6 +92,26 @@ class Entity implements ArrayAccess, JsonSerializable
     public function __unset(string $field): void
     {
         $this->unset($field);
+    }
+
+    /**
+     * Get an entity value.
+     * @param string $field The field name.
+     * @return mixed The value.
+     */
+    public function &__get(string $field): mixed
+    {
+        return $this->get($field);
+    }
+
+    /**
+     * Get an entity value.
+     * @param mixed $field The field name.
+     * @return mixed The value.
+     */
+    public function &offsetGet(mixed $field): mixed
+    {
+        return $this->get($field);
     }
 
     /**
@@ -155,16 +163,6 @@ class Entity implements ArrayAccess, JsonSerializable
     public function offsetExists(mixed $field): bool
     {
         return $this->has($field);
-    }
-
-    /**
-     * Get an entity value.
-     * @param mixed $field The field name.
-     * @return mixed The value.
-     */
-    public function &offsetGet(mixed $field): mixed
-    {
-        return $this->get($field);
     }
 
     /**
@@ -266,5 +264,4 @@ class Entity implements ArrayAccess, JsonSerializable
     {
         return json_encode($this, JSON_PRETTY_PRINT) ?: '';
     }
-
 }

@@ -20,20 +20,33 @@ use function ucwords;
  */
 trait FieldTrait
 {
-
-    protected array $fields = [];
-
-    protected array $virtual = [];
-
-    protected array $hidden = [];
-
-    protected array $original = [];
-
-    protected array $dirty = [];
-
     protected array $accessible = [
         '*' => true
     ];
+
+    protected array $dirty = [];
+    protected array $fields = [];
+    protected array $hidden = [];
+    protected array $original = [];
+    protected array $virtual = [];
+
+    /**
+     * Get a value from the entity.
+     * @param string $field The field name.
+     * @return mixed The value.
+     */
+    public function &get(string $field): mixed
+    {
+        $value = &$this->fields[$field] ?? null;
+
+        $method = static::mutateMethod($field, 'get');
+
+        if ($method) {
+            $value = $this->$method($value);
+        }
+
+        return $value;
+    }
 
     /**
      * Clear values from the entity.
@@ -42,7 +55,7 @@ trait FieldTrait
      */
     public function clear(array $fields): static
     {
-        foreach ($fields AS $field) {
+        foreach ($fields as $field) {
             $this->unset($field);
         }
 
@@ -110,29 +123,11 @@ trait FieldTrait
     {
         $options['guard'] ??= true;
 
-        foreach ($data AS $field => $value) {
+        foreach ($data as $field => $value) {
             $this->set($field, $value, $options);
         }
 
         return $this;
-    }
-
-    /**
-     * Get a value from the entity.
-     * @param string $field The field name.
-     * @return mixed The value.
-     */
-    public function &get(string $field): mixed
-    {
-        $value = &$this->fields[$field] ?? null;
-
-        $method = static::mutateMethod($field, 'get');
-
-        if ($method) {
-            $value = $this->$method($value);
-        }
-
-        return $value;
     }
 
     /**
@@ -254,7 +249,7 @@ trait FieldTrait
 
         $fields = array_keys($this->fields);
 
-        foreach ($fields AS $field) {
+        foreach ($fields as $field) {
             if (!$this->isEmpty($field)) {
                 return false;
             }
@@ -415,5 +410,4 @@ trait FieldTrait
 
         return $method;
     }
-
 }

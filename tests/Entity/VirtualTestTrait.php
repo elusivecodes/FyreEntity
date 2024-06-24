@@ -7,7 +7,6 @@ use Fyre\Entity\Entity;
 
 trait VirtualTestTrait
 {
-
     public function testSetVirtual(): void
     {
         $entity = new Entity();
@@ -20,21 +19,6 @@ trait VirtualTestTrait
         $this->assertSame(
             [
                 'test'
-            ],
-            $entity->getVirtual()
-        );
-    }
-
-    public function testSetVirtualOverwrite(): void
-    {
-        $entity = new Entity();
-
-        $entity->setVirtual(['test1']);
-        $entity->setVirtual(['test2']);
-
-        $this->assertSame(
-            [
-                'test2'
             ],
             $entity->getVirtual()
         );
@@ -56,6 +40,21 @@ trait VirtualTestTrait
         );
     }
 
+    public function testSetVirtualOverwrite(): void
+    {
+        $entity = new Entity();
+
+        $entity->setVirtual(['test1']);
+        $entity->setVirtual(['test2']);
+
+        $this->assertSame(
+            [
+                'test2'
+            ],
+            $entity->getVirtual()
+        );
+    }
+
     public function testSetVirtualVisible(): void
     {
         $entity = new Entity();
@@ -69,5 +68,4 @@ trait VirtualTestTrait
             $entity->getVisible()
         );
     }
-
 }
