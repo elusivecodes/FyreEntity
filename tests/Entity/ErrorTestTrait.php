@@ -24,7 +24,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $child->setError('test', 'error');
@@ -32,8 +32,8 @@ trait ErrorTestTrait
         $this->assertSame(
             [
                 'test' => [
-                    'error'
-                ]
+                    'error',
+                ],
             ],
             $parent->getError('child')
         );
@@ -48,7 +48,7 @@ trait ErrorTestTrait
 
         $this->assertSame(
             [
-                'error'
+                'error',
             ],
             $entity->getError('test')
         );
@@ -58,14 +58,14 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $child->setError('test', 'error');
 
         $this->assertSame(
             [
-                'error'
+                'error',
             ],
             $parent->getError('child.test')
         );
@@ -88,14 +88,14 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $child->setError('test', 'error');
 
         $this->assertSame(
             [
-                'error'
+                'error',
             ],
             $parent->getError('children.0.test')
         );
@@ -105,7 +105,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $child->setError('test', 'error');
@@ -114,9 +114,9 @@ trait ErrorTestTrait
             [
                 [
                     'test' => [
-                        'error'
-                    ]
-                ]
+                        'error',
+                    ],
+                ],
             ],
             $parent->getError('children')
         );
@@ -131,8 +131,8 @@ trait ErrorTestTrait
         $this->assertSame(
             [
                 'test' => [
-                    'error'
-                ]
+                    'error',
+                ],
             ],
             $entity->getErrors()
         );
@@ -142,7 +142,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $child->setError('test', 'error');
@@ -151,9 +151,9 @@ trait ErrorTestTrait
             [
                 'child' => [
                     'test' => [
-                        'error'
-                    ]
-                ]
+                        'error',
+                    ],
+                ],
             ],
             $parent->getErrors()
         );
@@ -163,7 +163,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $child->setError('test', 'error');
@@ -173,10 +173,10 @@ trait ErrorTestTrait
                 'children' => [
                     [
                         'test' => [
-                            'error'
-                        ]
-                    ]
-                ]
+                            'error',
+                        ],
+                    ],
+                ],
             ],
             $parent->getErrors()
         );
@@ -197,7 +197,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $child->setError('test', 'error');
@@ -220,7 +220,7 @@ trait ErrorTestTrait
     {
         $child = new Entity();
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $child->setError('test', 'error');
@@ -241,7 +241,7 @@ trait ErrorTestTrait
 
         $this->assertSame(
             [
-                'error'
+                'error',
             ],
             $entity->getError('test')
         );
@@ -253,13 +253,13 @@ trait ErrorTestTrait
 
         $entity->setError('test', [
             'error1',
-            'error2'
+            'error2',
         ]);
 
         $this->assertSame(
             [
                 'error1',
-                'error2'
+                'error2',
             ],
             $entity->getError('test')
         );
@@ -275,7 +275,7 @@ trait ErrorTestTrait
         $this->assertSame(
             [
                 'error1',
-                'error2'
+                'error2',
             ],
             $entity->getError('test')
         );
@@ -290,7 +290,7 @@ trait ErrorTestTrait
 
         $this->assertSame(
             [
-                'error2'
+                'error2',
             ],
             $entity->getError('test')
         );
@@ -303,13 +303,13 @@ trait ErrorTestTrait
         $this->assertSame(
             $entity,
             $entity->setErrors([
-                'test' => 'error'
+                'test' => 'error',
             ])
         );
 
         $this->assertSame(
             [
-                'error'
+                'error',
             ],
             $entity->getError('test')
         );
@@ -320,17 +320,17 @@ trait ErrorTestTrait
         $entity = new Entity();
 
         $entity->setErrors([
-            'test' => 'error1'
+            'test' => 'error1',
         ]);
 
         $entity->setErrors([
-            'test' => 'error2'
+            'test' => 'error2',
         ]);
 
         $this->assertSame(
             [
                 'error1',
-                'error2'
+                'error2',
             ],
             $entity->getError('test')
         );
@@ -341,16 +341,16 @@ trait ErrorTestTrait
         $entity = new Entity();
 
         $entity->setErrors([
-            'test' => 'error1'
+            'test' => 'error1',
         ]);
 
         $entity->setErrors([
-            'test' => 'error2'
+            'test' => 'error2',
         ], true);
 
         $this->assertSame(
             [
-                'error2'
+                'error2',
             ],
             $entity->getError('test')
         );

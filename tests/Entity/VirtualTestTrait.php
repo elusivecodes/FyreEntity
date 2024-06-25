@@ -18,7 +18,7 @@ trait VirtualTestTrait
 
         $this->assertSame(
             [
-                'test'
+                'test',
             ],
             $entity->getVirtual()
         );
@@ -34,7 +34,7 @@ trait VirtualTestTrait
         $this->assertSame(
             [
                 'test1',
-                'test2'
+                'test2',
             ],
             $entity->getVirtual()
         );
@@ -49,7 +49,7 @@ trait VirtualTestTrait
 
         $this->assertSame(
             [
-                'test2'
+                'test2',
             ],
             $entity->getVirtual()
         );
@@ -63,7 +63,7 @@ trait VirtualTestTrait
 
         $this->assertSame(
             [
-                'test'
+                'test',
             ],
             $entity->getVisible()
         );

@@ -9,13 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class EntityLocatorTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        EntityLocator::clear();
-        EntityLocator::addNamespace('Tests\Mock');
-        EntityLocator::setDefaultEntityClass(Entity::class);
-    }
-
     public function testFind(): void
     {
         $this->assertSame(
@@ -52,7 +45,7 @@ final class EntityLocatorTest extends TestCase
     {
         $this->assertSame(
             [
-                '\Tests\Mock\\'
+                '\Tests\Mock\\',
             ],
             EntityLocator::getNamespaces()
         );
@@ -88,5 +81,12 @@ final class EntityLocatorTest extends TestCase
         $this->assertFalse(
             EntityLocator::removeNamespace('Tests\Invalid')
         );
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        EntityLocator::clear();
+        EntityLocator::addNamespace('Tests\Mock');
+        EntityLocator::setDefaultEntityClass(Entity::class);
     }
 }

@@ -27,7 +27,7 @@ trait MagicTestTrait
     public function testArrayAccessIsset(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertTrue(
@@ -38,7 +38,7 @@ trait MagicTestTrait
     public function testArrayAccessIssetEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertTrue(
@@ -70,7 +70,7 @@ trait MagicTestTrait
     public function testArrayAccessUnset(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         unset($entity['test']);
@@ -95,7 +95,7 @@ trait MagicTestTrait
     public function testMagicIsset(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertTrue(
@@ -106,7 +106,7 @@ trait MagicTestTrait
     public function testMagicIssetEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertTrue(
@@ -126,7 +126,7 @@ trait MagicTestTrait
     public function testMagicJson(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
@@ -138,7 +138,7 @@ trait MagicTestTrait
     public function testMagicJsonDateTime(): void
     {
         $entity = new Entity([
-            'test' => new DateTime('2022-01-01')
+            'test' => new DateTime('2022-01-01'),
         ]);
 
         $this->assertSame(
@@ -150,10 +150,10 @@ trait MagicTestTrait
     public function testMagicJsonDeep(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $this->assertSame(
@@ -165,10 +165,10 @@ trait MagicTestTrait
     public function testMagicJsonNested(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $this->assertSame(
@@ -192,7 +192,7 @@ trait MagicTestTrait
     public function testMagicToString(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
@@ -204,7 +204,7 @@ trait MagicTestTrait
     public function testMagicToStringDateTime(): void
     {
         $entity = new Entity([
-            'test' => new DateTime('2022-01-01')
+            'test' => new DateTime('2022-01-01'),
         ]);
 
         $this->assertSame(
@@ -216,10 +216,10 @@ trait MagicTestTrait
     public function testMagicToStringDeep(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $this->assertSame(
@@ -231,10 +231,10 @@ trait MagicTestTrait
     public function testMagicToStringNested(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $this->assertSame(
@@ -246,7 +246,7 @@ trait MagicTestTrait
     public function testMagicUnset(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         unset($entity->test);
@@ -259,12 +259,12 @@ trait MagicTestTrait
     public function testToArray(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
             [
-                'test' => 1
+                'test' => 1,
             ],
             $entity->toArray()
         );
@@ -273,17 +273,17 @@ trait MagicTestTrait
     public function testToArrayDeep(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $this->assertSame(
             [
                 'child' => [
-                    'test' => 1
-                ]
+                    'test' => 1,
+                ],
             ],
             $parent->toArray()
         );
@@ -292,19 +292,19 @@ trait MagicTestTrait
     public function testToArrayNested(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $this->assertSame(
             [
                 'children' => [
                     [
-                        'test' => 1
-                    ]
-                ]
+                        'test' => 1,
+                    ],
+                ],
             ],
             $parent->toArray()
         );
@@ -313,7 +313,7 @@ trait MagicTestTrait
     public function testToJson(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
@@ -325,7 +325,7 @@ trait MagicTestTrait
     public function testToJsonDateTime(): void
     {
         $entity = new Entity([
-            'test' => new DateTime('2022-01-01')
+            'test' => new DateTime('2022-01-01'),
         ]);
 
         $this->assertSame(
@@ -337,10 +337,10 @@ trait MagicTestTrait
     public function testToJsonDeep(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'child' => $child
+            'child' => $child,
         ]);
 
         $this->assertSame(
@@ -352,10 +352,10 @@ trait MagicTestTrait
     public function testToJsonNested(): void
     {
         $child = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
         $parent = new Entity([
-            'children' => [$child]
+            'children' => [$child],
         ]);
 
         $this->assertSame(

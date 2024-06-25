@@ -10,12 +10,12 @@ trait OriginalTestTrait
     public function tesExtractOriginalFallback(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
             [
-                'test' => 1
+                'test' => 1,
             ],
             $entity->extractOriginal('test')
         );
@@ -24,7 +24,7 @@ trait OriginalTestTrait
     public function testCleanOriginal(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);
@@ -39,7 +39,7 @@ trait OriginalTestTrait
     public function testClearOriginal(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);
@@ -55,7 +55,7 @@ trait OriginalTestTrait
         $entity = new Entity([
             'test1' => 1,
             'test2' => 2,
-            'test3' => 3
+            'test3' => 3,
         ]);
 
         $entity->set('test2', 4);
@@ -63,7 +63,7 @@ trait OriginalTestTrait
         $this->assertSame(
             [
                 'test2' => 2,
-                'test3' => 3
+                'test3' => 3,
             ],
             $entity->extractOriginal(['test2', 'test3'])
         );
@@ -75,7 +75,7 @@ trait OriginalTestTrait
 
         $this->assertSame(
             [
-                'invalid' => null
+                'invalid' => null,
             ],
             $entity->extractOriginal(['invalid'])
         );
@@ -84,7 +84,7 @@ trait OriginalTestTrait
     public function testGetOriginal(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);
@@ -98,7 +98,7 @@ trait OriginalTestTrait
     public function testGetOriginalAfterUnset(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);
@@ -112,7 +112,7 @@ trait OriginalTestTrait
     public function testGetOriginalFallback(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $this->assertSame(
@@ -146,7 +146,7 @@ trait OriginalTestTrait
     public function testGetOriginalMultipleSet(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);
@@ -161,7 +161,7 @@ trait OriginalTestTrait
     public function testUnsetOriginal(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->set('test', 2);

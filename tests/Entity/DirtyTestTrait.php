@@ -36,14 +36,14 @@ trait DirtyTestTrait
         $entity = new Entity([
             'test1' => 1,
             'test2' => 2,
-            'test3' => 3
+            'test3' => 3,
         ]);
 
         $entity->setDirty('test2');
 
         $this->assertSame(
             [
-                'test2' => 2
+                'test2' => 2,
             ],
             $entity->extractDirty()
         );
@@ -54,14 +54,14 @@ trait DirtyTestTrait
         $entity = new Entity([
             'test1' => 1,
             'test2' => 2,
-            'test3' => 3
+            'test3' => 3,
         ]);
 
         $entity->setDirty('test2');
 
         $this->assertSame(
             [
-                'test2' => 2
+                'test2' => 2,
             ],
             $entity->extractDirty(['test2', 'test3'])
         );
@@ -70,7 +70,7 @@ trait DirtyTestTrait
     public function testIsDirtyFalseSetSameValue(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $entity->set('test', 2);

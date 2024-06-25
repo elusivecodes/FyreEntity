@@ -17,11 +17,14 @@ use function trim;
 abstract class EntityLocator
 {
     protected static string $defaultEntityClass = Entity::class;
+
     protected static array $entities = [];
+
     protected static array $namespaces = [];
 
     /**
      * Add a namespace for locating entities.
+     *
      * @param string $namespace The namespace.
      */
     public static function addNamespace(string $namespace): void
@@ -44,6 +47,7 @@ abstract class EntityLocator
 
     /**
      * Find the entity class name for an alias.
+     *
      * @param string $alias The alias.
      * @return string The entity class name.
      */
@@ -54,6 +58,7 @@ abstract class EntityLocator
 
     /**
      * Get the default entity class name.
+     *
      * @return string The default entity class name.
      */
     public static function getDefaultEntityClass(): string
@@ -63,6 +68,7 @@ abstract class EntityLocator
 
     /**
      * Get the namespaces.
+     *
      * @return array The namespaces.
      */
     public static function getNamespaces(): array
@@ -72,6 +78,7 @@ abstract class EntityLocator
 
     /**
      * Determine if a namespace exists.
+     *
      * @param string $namespace The namespace.
      * @return bool TRUE if the namespace exists, otherwise FALSE.
      */
@@ -84,6 +91,7 @@ abstract class EntityLocator
 
     /**
      * Remove a namespace.
+     *
      * @param string $namespace The namespace.
      * @return bool TRUE If the namespace was removed, otherwise FALSE.
      */
@@ -106,6 +114,7 @@ abstract class EntityLocator
 
     /**
      * Set the default entity class name.
+     *
      * @param string $defaultEntityClass The default entity class name.
      */
     public static function setDefaultEntityClass(string $defaultEntityClass): void
@@ -115,6 +124,7 @@ abstract class EntityLocator
 
     /**
      * Locate the entity class name for an alias.
+     *
      * @param string $alias The alias.
      * @return string The entity class name.
      */
@@ -135,6 +145,7 @@ abstract class EntityLocator
 
     /**
      * Normalize a namespace
+     *
      * @param string $namespace The namespace.
      * @return string The normalized namespace.
      */

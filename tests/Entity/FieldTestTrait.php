@@ -11,7 +11,7 @@ trait FieldTestTrait
     {
         $entity = new Entity([
             'test1' => 2,
-            'test2' => 3
+            'test2' => 3,
         ]);
 
         $this->assertSame(
@@ -34,13 +34,13 @@ trait FieldTestTrait
         $entity = new Entity([
             'test1' => 1,
             'test2' => 2,
-            'test3' => 3
+            'test3' => 3,
         ]);
 
         $this->assertSame(
             [
                 'test2' => 2,
-                'test3' => 3
+                'test3' => 3,
             ],
             $entity->extract(['test2', 'test3'])
         );
@@ -52,7 +52,7 @@ trait FieldTestTrait
 
         $this->assertSame(
             [
-                'invalid' => null
+                'invalid' => null,
             ],
             $entity->extract(['invalid'])
         );
@@ -66,7 +66,7 @@ trait FieldTestTrait
             $entity,
             $entity->fill([
                 'test1' => 2,
-                'test2' => 3
+                'test2' => 3,
             ])
         );
 
@@ -93,7 +93,7 @@ trait FieldTestTrait
     public function testHas(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertTrue(
@@ -104,7 +104,7 @@ trait FieldTestTrait
     public function testHasEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertTrue(
@@ -124,7 +124,7 @@ trait FieldTestTrait
     public function testHasValue(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertTrue(
@@ -135,7 +135,7 @@ trait FieldTestTrait
     public function testHasValueEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertFalse(
@@ -155,7 +155,7 @@ trait FieldTestTrait
     public function testIsEmpty(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertFalse(
@@ -166,7 +166,7 @@ trait FieldTestTrait
     public function testIsEmptyEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertTrue(
@@ -177,7 +177,7 @@ trait FieldTestTrait
     public function testIsEmptyField(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertFalse(
@@ -188,7 +188,7 @@ trait FieldTestTrait
     public function testIsEmptyFieldEmpty(): void
     {
         $entity = new Entity([
-            'test' => ''
+            'test' => '',
         ]);
 
         $this->assertTrue(
@@ -223,7 +223,7 @@ trait FieldTestTrait
     public function testUnset(): void
     {
         $entity = new Entity([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertSame(

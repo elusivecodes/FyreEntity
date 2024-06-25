@@ -15,7 +15,7 @@ trait MutationTestTrait
 
         $this->assertSame(
             [
-                'decimal' => '2.50'
+                'decimal' => '2.50',
             ],
             $entity->extract(['decimal'])
         );
@@ -24,12 +24,12 @@ trait MutationTestTrait
     public function testExtractOriginalFallbackNoMutation(): void
     {
         $entity = new MockEntity([
-            'decimal' => 1
+            'decimal' => 1,
         ]);
 
         $this->assertSame(
             [
-                'decimal' => 1
+                'decimal' => 1,
             ],
             $entity->extractOriginal(['decimal'])
         );
@@ -38,14 +38,14 @@ trait MutationTestTrait
     public function testExtractOriginalNoMutation(): void
     {
         $entity = new MockEntity([
-            'decimal' => 2
+            'decimal' => 2,
         ]);
 
         $entity->set('decimal', 2.5);
 
         $this->assertSame(
             [
-                'decimal' => 2
+                'decimal' => 2,
             ],
             $entity->extractOriginal(['decimal'])
         );
@@ -56,7 +56,7 @@ trait MutationTestTrait
         $entity = new MockEntity();
 
         $entity->fill([
-            'integer' => 2.5
+            'integer' => 2.5,
         ]);
 
         $this->assertSame(
@@ -70,7 +70,7 @@ trait MutationTestTrait
         $entity = new MockEntity();
 
         $entity->fill([
-            'integer' => 2.5
+            'integer' => 2.5,
         ], ['mutate' => false]);
 
         $this->assertSame(
@@ -94,7 +94,7 @@ trait MutationTestTrait
     public function testGetOriginalFallbackNoMutation(): void
     {
         $entity = new MockEntity([
-            'decimal' => 1
+            'decimal' => 1,
         ]);
 
         $this->assertSame(
@@ -106,7 +106,7 @@ trait MutationTestTrait
     public function testGetOriginalNoMutation(): void
     {
         $entity = new MockEntity([
-            'decimal' => 2
+            'decimal' => 2,
         ]);
 
         $entity->set('decimal', 2.5);
@@ -120,7 +120,7 @@ trait MutationTestTrait
     public function testInitMutation(): void
     {
         $entity = new MockEntity([
-            'integer' => 2.5
+            'integer' => 2.5,
         ]);
 
         $this->assertSame(

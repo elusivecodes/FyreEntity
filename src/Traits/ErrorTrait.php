@@ -21,10 +21,12 @@ use function strpos;
 trait ErrorTrait
 {
     protected array $errors = [];
+
     protected array $invalid = [];
 
     /**
      * Fill the entity with invalid values.
+     *
      * @param array $data The data to fill.
      * @param bool $overwrite Whether to overwrite existing values.
      * @return Entity The Entity.
@@ -40,6 +42,7 @@ trait ErrorTrait
 
     /**
      * Get the errors for an entity field.
+     *
      * @param string $field The field name.
      * @return array The errors.
      */
@@ -60,6 +63,7 @@ trait ErrorTrait
 
     /**
      * Get all errors for the entity.
+     *
      * @return array The errors.
      */
     public function getErrors(): array
@@ -78,6 +82,7 @@ trait ErrorTrait
 
     /**
      * Get invalid value(s) from the entity.
+     *
      * @param string|null $field The field name.
      * @return mixed The value.
      */
@@ -92,6 +97,7 @@ trait ErrorTrait
 
     /**
      * Determine if the entity has errors.
+     *
      * @param bool $includeNested Whether to include nested entity errors.
      * @return bool TRUE if the entity has errors, otherwise FALSE.
      */
@@ -116,6 +122,7 @@ trait ErrorTrait
 
     /**
      * Set errors for an entity field.
+     *
      * @param string $field The field name.
      * @param string|array $error The error(s).
      * @param bool $overwrite Whether to overwrite existing errors.
@@ -128,6 +135,7 @@ trait ErrorTrait
 
     /**
      * Set all errors for the entity.
+     *
      * @param array $errors The errors.
      * @param bool $overwrite Whether to overwrite existing errors.
      */
@@ -149,6 +157,7 @@ trait ErrorTrait
 
     /**
      * Set an invalid value.
+     *
      * @param string $field The field name.
      * @param mixed $value The value.
      * @param bool $overwrite Whether to overwrite an existing value.
@@ -167,6 +176,7 @@ trait ErrorTrait
 
     /**
      * Check a value for errors.
+     *
      * @param mixed $value The value.
      * @return bool TRUE if the value has errors, otherwise FALSE.
      */
@@ -189,6 +199,7 @@ trait ErrorTrait
 
     /**
      * Read errors from a value.
+     *
      * @param mixed $value The value.
      * @param string|null $field The field name.
      * @return array The errors.
@@ -223,6 +234,7 @@ trait ErrorTrait
 
     /**
      * Read deeply nested errors using dot notation.
+     *
      * @param mixed $value The value.
      * @param string $field The field name.
      * @return array The errors.

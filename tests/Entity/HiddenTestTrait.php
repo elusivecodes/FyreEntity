@@ -18,7 +18,7 @@ trait HiddenTestTrait
 
         $this->assertSame(
             [
-                'test'
+                'test',
             ],
             $entity->getHidden()
         );
@@ -34,7 +34,7 @@ trait HiddenTestTrait
         $this->assertSame(
             [
                 'test1',
-                'test2'
+                'test2',
             ],
             $entity->getHidden()
         );
@@ -62,7 +62,7 @@ trait HiddenTestTrait
 
         $this->assertSame(
             [
-                'test2'
+                'test2',
             ],
             $entity->getHidden()
         );

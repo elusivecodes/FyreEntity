@@ -32,7 +32,7 @@ final class EntityTest extends TestCase
     public function testEntityData(): void
     {
         $entity = new Entity([
-            'a' => 1
+            'a' => 1,
         ]);
 
         $this->assertSame(

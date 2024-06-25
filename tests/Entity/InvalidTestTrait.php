@@ -26,7 +26,7 @@ trait InvalidTestTrait
         $this->assertSame(
             $entity,
             $entity->fillInvalid([
-                'test' => 1
+                'test' => 1,
             ])
         );
 
@@ -42,7 +42,7 @@ trait InvalidTestTrait
 
         $entity->setInvalid('test', 1);
         $entity->fillInvalid([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertSame(
@@ -57,7 +57,7 @@ trait InvalidTestTrait
 
         $entity->setInvalid('test', 1);
         $entity->fillInvalid([
-            'test' => 2
+            'test' => 2,
         ], true);
 
         $this->assertSame(
@@ -74,7 +74,7 @@ trait InvalidTestTrait
 
         $this->assertSame(
             [
-                'test' => 1
+                'test' => 1,
             ],
             $entity->getInvalid()
         );

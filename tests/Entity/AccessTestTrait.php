@@ -10,12 +10,12 @@ trait AccessTestTrait
     public function testFillWithoutAccess(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->setAccess('test', false);
         $entity->fill([
-            'test' => 2
+            'test' => 2,
         ]);
 
         $this->assertSame(
@@ -27,12 +27,12 @@ trait AccessTestTrait
     public function testFillWithoutGuard(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->setAccess('test', false);
         $entity->fill([
-            'test' => 2
+            'test' => 2,
         ], ['guard' => false]);
 
         $this->assertSame(
@@ -91,7 +91,7 @@ trait AccessTestTrait
     public function testSetWithoutAccess(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->setAccess('test', false);
@@ -106,7 +106,7 @@ trait AccessTestTrait
     public function testSetWithoutGuard(): void
     {
         $entity = new Entity([
-            'test' => 1
+            'test' => 1,
         ]);
 
         $entity->setAccess('test', false);

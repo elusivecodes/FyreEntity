@@ -26,10 +26,12 @@ class Entity implements ArrayAccess, JsonSerializable
     use FieldTrait;
 
     protected bool $new = false;
+
     protected string|null $source = null;
 
     /**
      * New Entity constructor.
+     *
      * @param array $data The data for populating the entity.
      * @param array $options The options for creating the entity.
      */
@@ -58,6 +60,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Determine if an entity value is set.
+     *
      * @param string $field The field name.
      * @return bool TRUE if the value is set, otherwise FALSE.
      */
@@ -68,6 +71,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Set an entity value.
+     *
      * @param string $field The field name.
      * @param mixed $value The value.
      */
@@ -78,6 +82,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Convert the entity to a JSON encoded string.
+     *
      * @return string The JSON encoded string.
      */
     public function __toString(): string
@@ -87,6 +92,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Unset an entity value.
+     *
      * @param string $field The field name.
      */
     public function __unset(string $field): void
@@ -96,6 +102,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Get an entity value.
+     *
      * @param string $field The field name.
      * @return mixed The value.
      */
@@ -106,6 +113,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Get an entity value.
+     *
      * @param mixed $field The field name.
      * @return mixed The value.
      */
@@ -116,6 +124,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Clean the entity.
+     *
      * @return Entity The Entity.
      */
     public function clean(): static
@@ -130,6 +139,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Get the entity source.
+     *
      * @return string|null The source.
      */
     public function getSource(): string|null
@@ -139,6 +149,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Determine if the entity is new.
+     *
      * @return bool TRUE if the entity is new, otherwise FALSE.
      */
     public function isNew(): bool
@@ -148,6 +159,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Convert the entity to an array for JSON serializing.
+     *
      * @return array The array for serializing.
      */
     public function jsonSerialize(): array
@@ -157,6 +169,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Determine if an entity value is set.
+     *
      * @param mixed $field The field name.
      * @return bool TRUE if the value is set, otherwise FALSE.
      */
@@ -167,6 +180,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Set an entity value.
+     *
      * @param mixed $field The field name.
      * @param mixed $value The value.
      */
@@ -177,6 +191,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Unset an entity value.
+     *
      * @param mixed $field The field name.
      */
     public function offsetUnset(mixed $field): void
@@ -186,6 +201,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Set whether the entity is new.
+     *
      * @param bool $new Whether the entity is new.
      * @return Entity The Entity.
      */
@@ -198,6 +214,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Set the entity source.
+     *
      * @param string $source The source.
      * @return Entity The Entity.
      */
@@ -210,6 +227,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Convert the entity to an array.
+     *
      * @param bool $convertObjects Whether to convert objects to strings where possible.
      * @return array The array.
      */
@@ -258,6 +276,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
     /**
      * Convert the entity to a JSON encoded string.
+     *
      * @return string The JSON encoded string.
      */
     public function toJson(): string

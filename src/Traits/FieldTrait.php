@@ -21,17 +21,22 @@ use function ucwords;
 trait FieldTrait
 {
     protected array $accessible = [
-        '*' => true
+        '*' => true,
     ];
 
     protected array $dirty = [];
+
     protected array $fields = [];
+
     protected array $hidden = [];
+
     protected array $original = [];
+
     protected array $virtual = [];
 
     /**
      * Get a value from the entity.
+     *
      * @param string $field The field name.
      * @return mixed The value.
      */
@@ -50,6 +55,7 @@ trait FieldTrait
 
     /**
      * Clear values from the entity.
+     *
      * @param array $fields The fields to clear.
      * @return Entity The Entity.
      */
@@ -64,6 +70,7 @@ trait FieldTrait
 
     /**
      * Extract values from the entity.
+     *
      * @param array $fields The fields to extract.
      * @return array The extracted values.
      */
@@ -79,6 +86,7 @@ trait FieldTrait
 
     /**
      * Extract dirty values from the entity.
+     *
      * @param array|null $fields The fields to extract.
      * @return array The extracted values.
      */
@@ -100,6 +108,7 @@ trait FieldTrait
 
     /**
      * Extract original values from the entity.
+     *
      * @param array $fields The fields to extract.
      * @return array The extracted values.
      */
@@ -115,6 +124,7 @@ trait FieldTrait
 
     /**
      * Fill the entity with values.
+     *
      * @param array $data The data to fill.
      * @param array $options The options for filling the entity.
      * @return Entity The Entity.
@@ -132,6 +142,7 @@ trait FieldTrait
 
     /**
      * Get the accessible fields from the entity.
+     *
      * @return array The accessible fields.
      */
     public function getAccessible(): array
@@ -141,6 +152,7 @@ trait FieldTrait
 
     /**
      * Get the dirty fields from the entity.
+     *
      * @return array The dirty fields.
      */
     public function getDirty(): array
@@ -150,6 +162,7 @@ trait FieldTrait
 
     /**
      * Get the hidden fields from the entity.
+     *
      * @return array The hidden fields.
      */
     public function getHidden(): array
@@ -159,6 +172,7 @@ trait FieldTrait
 
     /**
      * Get an original value from the entity.
+     *
      * @param string $field The field name.
      * @return mixed The value.
      */
@@ -173,6 +187,7 @@ trait FieldTrait
 
     /**
      * Get the virtual fields from the entity.
+     *
      * @return array The virtual fields.
      */
     public function getVirtual(): array
@@ -182,6 +197,7 @@ trait FieldTrait
 
     /**
      * Get the visible fields from the entity.
+     *
      * @return array The visible fields.
      */
     public function getVisible(): array
@@ -194,6 +210,7 @@ trait FieldTrait
 
     /**
      * Determine if an entity value is set.
+     *
      * @param string $field The field name.
      * @return bool TRUE if the value is set, otherwise FALSE.
      */
@@ -204,6 +221,7 @@ trait FieldTrait
 
     /**
      * Determine if an entity value is not empty.
+     *
      * @param string $field The field name.
      * @return bool TRUE if the value is not empty, otherwise FALSE.
      */
@@ -214,6 +232,7 @@ trait FieldTrait
 
     /**
      * Determine if an entity field is accessible.
+     *
      * @param string $field The field name.
      * @return bool TRUE if the field is accessible otherwise FALSE.
      */
@@ -224,6 +243,7 @@ trait FieldTrait
 
     /**
      * Determine if an entity field is dirty.
+     *
      * @param string|null $field The field name.
      * @return bool TRUE if the entity field is dirty, otherwise FALSE.
      */
@@ -238,6 +258,7 @@ trait FieldTrait
 
     /**
      * Determine if an entity value is empty.
+     *
      * @param string|null $field The field name.
      * @return bool TRUE if the value is empty, otherwise FALSE.
      */
@@ -260,6 +281,7 @@ trait FieldTrait
 
     /**
      * Set an entity value.
+     *
      * @param string $field The field name.
      * @param mixed $value The value.
      * @param array $options The options for setting the value.
@@ -301,6 +323,7 @@ trait FieldTrait
 
     /**
      * Set whether a field is accessible.
+     *
      * @param string $field The field name.
      * @param bool $accessible Whether the field is accessible.
      * @return Entity The Entity.
@@ -322,6 +345,7 @@ trait FieldTrait
 
     /**
      * Set whether a field is dirty.
+     *
      * @param string $field The field name.
      * @param bool $dirty Whether the field is dirty.
      * @return Entity The Entity.
@@ -342,6 +366,7 @@ trait FieldTrait
 
     /**
      * Set hidden fields.
+     *
      * @param array $fields The fields.
      * @param bool $merge Whether to merge with existing fields.
      * @return Entity The Entity.
@@ -359,6 +384,7 @@ trait FieldTrait
 
     /**
      * Set virtual fields.
+     *
      * @param array $fields The fields.
      * @param bool $merge Whether to merge with existing fields.
      * @return Entity The Entity.
@@ -376,6 +402,7 @@ trait FieldTrait
 
     /**
      * Unset an entity value.
+     *
      * @param string $field The field name.
      * @return Entity The Entity.
      */
@@ -390,6 +417,7 @@ trait FieldTrait
 
     /**
      * Get the mutation method for a field.
+     *
      * @param string $field The field name.
      * @param string $prefix The method prefix.
      * @return string|null The mutation method.
