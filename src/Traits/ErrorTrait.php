@@ -124,7 +124,7 @@ trait ErrorTrait
      * Set errors for an entity field.
      *
      * @param string $field The field name.
-     * @param string|array $error The error(s).
+     * @param array|string $error The error(s).
      * @param bool $overwrite Whether to overwrite existing errors.
      * @return Entity The Entity.
      */
