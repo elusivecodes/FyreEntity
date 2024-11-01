@@ -16,6 +16,7 @@ final class EntityTest extends TestCase
     use InvalidTestTrait;
     use MagicTestTrait;
     use MutationTestTrait;
+    use StateTestTrait;
     use OriginalTestTrait;
     use VirtualTestTrait;
 

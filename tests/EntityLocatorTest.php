@@ -5,31 +5,43 @@ namespace Tests;
 
 use Fyre\Entity\Entity;
 use Fyre\Entity\EntityLocator;
+use Fyre\Utility\Inflector;
 use PHPUnit\Framework\TestCase;
+use Tests\Mock\MockEntity;
 
 final class EntityLocatorTest extends TestCase
 {
+    protected EntityLocator $locator;
+
     public function testFind(): void
     {
         $this->assertSame(
-            '\Tests\Mock\MockEntity',
-            EntityLocator::find('MockEntity')
+            MockEntity::class,
+            $this->locator->find('MockEntity')
+        );
+    }
+
+    public function testFindAlias(): void
+    {
+        $this->assertSame(
+            'MockEntities',
+            $this->locator->findAlias(MockEntity::class)
         );
     }
 
     public function testFindInvalid(): void
     {
         $this->assertSame(
-            'Fyre\Entity\Entity',
-            EntityLocator::find('Invalid')
+            Entity::class,
+            $this->locator->find('Invalid')
         );
     }
 
     public function testFindPlural(): void
     {
         $this->assertSame(
-            '\Tests\Mock\MockEntity',
-            EntityLocator::find('MockEntities')
+            MockEntity::class,
+            $this->locator->find('MockEntities')
         );
     }
 
@@ -37,7 +49,7 @@ final class EntityLocatorTest extends TestCase
     {
         $this->assertSame(
             Entity::class,
-            EntityLocator::getDefaultEntityClass()
+            $this->locator->getDefaultEntityClass()
         );
     }
 
@@ -45,48 +57,70 @@ final class EntityLocatorTest extends TestCase
     {
         $this->assertSame(
             [
-                '\Tests\Mock\\',
+                'Tests\Mock\\',
             ],
-            EntityLocator::getNamespaces()
+            $this->locator->getNamespaces()
         );
     }
 
     public function testHasNamespace(): void
     {
         $this->assertTrue(
-            EntityLocator::hasNamespace('Tests\Mock')
+            $this->locator->hasNamespace('Tests\Mock')
         );
     }
 
     public function testHasNamespaceInvalid(): void
     {
         $this->assertFalse(
-            EntityLocator::hasNamespace('Tests\Invalid')
+            $this->locator->hasNamespace('Tests\Invalid')
+        );
+    }
+
+    public function testMap(): void
+    {
+        $this->assertSame(
+            $this->locator,
+            $this->locator->map('Test', MockEntity::class)
+        );
+
+        $this->assertSame(
+            MockEntity::class,
+            $this->locator->find('Test')
+        );
+
+        $this->assertSame(
+            'Test',
+            $this->locator->findAlias(MockEntity::class)
         );
     }
 
     public function testRemoveNamespace(): void
     {
-        $this->assertTrue(
-            EntityLocator::removeNamespace('Tests\Mock')
+        $this->assertSame(
+            $this->locator,
+            $this->locator->removeNamespace('Tests\Mock')
         );
 
         $this->assertFalse(
-            EntityLocator::hasNamespace('Tests\Mock')
+            $this->locator->hasNamespace('Tests\Mock')
         );
     }
 
     public function testRemoveNamespaceInvalid(): void
     {
-        $this->assertFalse(
-            EntityLocator::removeNamespace('Tests\Invalid')
+        $this->assertSame(
+            $this->locator,
+            $this->locator->removeNamespace('Tests\Invalid')
         );
     }
 
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
     {
-        EntityLocator::clear();
-        EntityLocator::addNamespace('Tests\Mock');
-        EntityLocator::setDefaultEntityClass(Entity::class);
+        $inflector = new Inflector();
+
+        $this->locator = new EntityLocator($inflector, [
+            'Tests\Mock',
+        ]);
     }
 }

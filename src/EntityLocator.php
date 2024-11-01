@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Fyre\Entity;
 
 use Fyre\Utility\Inflector;
+use ReflectionClass;
 
+use function array_search;
 use function array_splice;
 use function class_exists;
 use function in_array;
@@ -14,35 +16,55 @@ use function trim;
 /**
  * EntityLocator
  */
-abstract class EntityLocator
+class EntityLocator
 {
-    protected static string $defaultEntityClass = Entity::class;
+    protected string $defaultEntityClass = Entity::class;
 
-    protected static array $entities = [];
+    protected array $entities = [];
 
-    protected static array $namespaces = [];
+    protected Inflector $inflector;
+
+    protected array $namespaces = [];
+
+    /**
+     * New EntityLocator constructor.
+     *
+     * @param Inflector $inflector The Inflector.
+     * @param array $namespaces The namespaces.
+     */
+    public function __construct(Inflector $inflector, array $namespaces = [])
+    {
+        $this->inflector = $inflector;
+
+        foreach ($namespaces AS $namespace) {
+            $this->addNamespace($namespace);
+        }
+    }
 
     /**
      * Add a namespace for locating entities.
      *
      * @param string $namespace The namespace.
+     * @return static The EntityLocator.
      */
-    public static function addNamespace(string $namespace): void
+    public function addNamespace(string $namespace): static
     {
         $namespace = static::normalizeNamespace($namespace);
 
-        if (!in_array($namespace, static::$namespaces)) {
-            static::$namespaces[] = $namespace;
+        if (!in_array($namespace, $this->namespaces)) {
+            $this->namespaces[] = $namespace;
         }
+
+        return $this;
     }
 
     /**
      * Clear all namespaces and entities.
      */
-    public static function clear(): void
+    public function clear(): void
     {
-        static::$namespaces = [];
-        static::$entities = [];
+        $this->namespaces = [];
+        $this->entities = [];
     }
 
     /**
@@ -51,9 +73,28 @@ abstract class EntityLocator
      * @param string $alias The alias.
      * @return string The entity class name.
      */
-    public static function find(string $alias): string
+    public function find(string $alias): string
     {
-        return static::$entities[$alias] ??= static::locate($alias);
+        return $this->entities[$alias] ??= static::locate($alias);
+    }
+
+    /**
+     * Find the alias for an entity class.
+     *
+     * @param string $entityClass The entity class name.
+     * @return string The alias.
+     */
+    public function findAlias(string $entityClass): string
+    {
+        $alias = array_search($entityClass, $this->entities);
+
+        if ($alias) {
+            return $alias;
+        }
+
+        $name = (new ReflectionClass($entityClass))->getShortName();
+
+        return $this->inflector->pluralize($name);
     }
 
     /**
@@ -61,9 +102,9 @@ abstract class EntityLocator
      *
      * @return string The default entity class name.
      */
-    public static function getDefaultEntityClass(): string
+    public function getDefaultEntityClass(): string
     {
-        return static::$defaultEntityClass;
+        return $this->defaultEntityClass;
     }
 
     /**
@@ -71,9 +112,9 @@ abstract class EntityLocator
      *
      * @return array The namespaces.
      */
-    public static function getNamespaces(): array
+    public function getNamespaces(): array
     {
-        return static::$namespaces;
+        return $this->namespaces;
     }
 
     /**
@@ -82,44 +123,60 @@ abstract class EntityLocator
      * @param string $namespace The namespace.
      * @return bool TRUE if the namespace exists, otherwise FALSE.
      */
-    public static function hasNamespace(string $namespace): bool
+    public function hasNamespace(string $namespace): bool
     {
         $namespace = static::normalizeNamespace($namespace);
 
-        return in_array($namespace, static::$namespaces);
+        return in_array($namespace, $this->namespaces);
+    }
+
+    /**
+     * Map an alias to an entity class.
+     *
+     * @param string $alias The alias.
+     * @param string $entityClass The entity class.
+     * @return static The EntityLocator.
+     */
+    public function map(string $alias, string $entityClass): static
+    {
+        $this->entities[$alias] = $entityClass;
+
+        return $this;
     }
 
     /**
      * Remove a namespace.
      *
      * @param string $namespace The namespace.
-     * @return bool TRUE If the namespace was removed, otherwise FALSE.
+     * @return static The EntityLocator.
      */
-    public static function removeNamespace(string $namespace): bool
+    public function removeNamespace(string $namespace): static
     {
         $namespace = static::normalizeNamespace($namespace);
 
-        foreach (static::$namespaces as $i => $otherNamespace) {
+        foreach ($this->namespaces as $i => $otherNamespace) {
             if ($otherNamespace !== $namespace) {
                 continue;
             }
 
-            array_splice(static::$namespaces, $i, 1);
-
-            return true;
+            array_splice($this->namespaces, $i, 1);
+            break;
         }
 
-        return false;
+        return $this;
     }
 
     /**
      * Set the default entity class name.
      *
      * @param string $defaultEntityClass The default entity class name.
+     * @return static The EntityLocator.
      */
-    public static function setDefaultEntityClass(string $defaultEntityClass): void
+    public function setDefaultEntityClass(string $defaultEntityClass): static
     {
-        static::$defaultEntityClass = $defaultEntityClass;
+        $this->defaultEntityClass = $defaultEntityClass;
+
+        return $this;
     }
 
     /**
@@ -128,11 +185,11 @@ abstract class EntityLocator
      * @param string $alias The alias.
      * @return string The entity class name.
      */
-    protected static function locate(string $alias): string
+    protected function locate(string $alias): string
     {
-        $alias = Inflector::singularize($alias);
+        $alias = $this->inflector->classify($alias);
 
-        foreach (static::$namespaces as $namespace) {
+        foreach ($this->namespaces as $namespace) {
             $fullClass = $namespace.$alias;
 
             if (class_exists($fullClass) && is_subclass_of($fullClass, Entity::class)) {
@@ -140,7 +197,7 @@ abstract class EntityLocator
             }
         }
 
-        return static::$defaultEntityClass;
+        return $this->defaultEntityClass;
     }
 
     /**
@@ -151,10 +208,6 @@ abstract class EntityLocator
      */
     protected static function normalizeNamespace(string $namespace): string
     {
-        $namespace = trim($namespace, '\\');
-
-        return $namespace ?
-            '\\'.$namespace.'\\' :
-            '\\';
+        return trim($namespace, '\\').'\\';
     }
 }
