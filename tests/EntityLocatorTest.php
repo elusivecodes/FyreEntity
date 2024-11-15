@@ -119,8 +119,7 @@ final class EntityLocatorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->locator = new EntityLocator($inflector, [
-            'Tests\Mock',
-        ]);
+        $this->locator = new EntityLocator($inflector);
+        $this->locator->addNamespace('Tests\Mock');
     }
 }

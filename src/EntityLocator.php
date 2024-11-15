@@ -32,13 +32,9 @@ class EntityLocator
      * @param Inflector $inflector The Inflector.
      * @param array $namespaces The namespaces.
      */
-    public function __construct(Inflector $inflector, array $namespaces = [])
+    public function __construct(Inflector $inflector)
     {
         $this->inflector = $inflector;
-
-        foreach ($namespaces AS $namespace) {
-            $this->addNamespace($namespace);
-        }
     }
 
     /**

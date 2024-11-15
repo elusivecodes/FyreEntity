@@ -10,7 +10,7 @@ trait StateTestTrait
     public function testState(): void
     {
         $entity = new Entity([
-            'test' => 0
+            'test' => 0,
         ]);
 
         $entity->set('test', 1);

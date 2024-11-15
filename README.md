@@ -7,7 +7,7 @@
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Methods](#methods)
-- [Entity Locators](#entity-locators)
+- [Entities](#entities)
 
 
 
@@ -22,11 +22,130 @@ composer require fyre/entity
 In PHP:
 
 ```php
-use Fyre\Entity\Entity;
+use Fyre\Entity\EntityLocator;
 ```
 
 
 ## Basic Usage
+
+- `$inflector` is an [*Inflector*](https://github.com/elusivecodes/FyreInflector).
+
+```php
+$entityLocator = new EntityLocator($inflector);
+```
+
+**Autoloading**
+
+It is recommended to bind the *EntityLocator* to the [*Container*](https://github.com/elusivecodes/FyreContainer) as a singleton.
+
+```php
+$container->singleton(EntityLocator::class);
+```
+
+
+## Methods
+
+**Add Namespace**
+
+Add a namespace for locating entities.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+$entityLocator->addNamespace($namespace);
+```
+
+**Clear**
+
+Clear all namespaces and entities.
+
+```php
+$entityLocator->clear();
+```
+
+**Find**
+
+Find the entity class name for an alias.
+
+- `$alias` is a string representing the alias.
+
+```php
+$className = $entityLocator->find($alias);
+```
+
+**Find Alias**
+
+Find the alias for an entity class name.
+
+- `$className` is a string representing the entity class name.
+
+```php
+$alias = $entityLocator->findAlias($className);
+```
+
+**Get Default Entity Class**
+
+Get the default entity class name.
+
+```php
+$defaultEntityClass = $entityLocator->getDefaultEntityClass();
+```
+
+**Get Namespaces**
+
+Get the namespaces.
+
+```php
+$namespaces = $entityLocator->getNamespaces();
+```
+
+**Has Namespace**
+
+Check if a namespace exists.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+$hasNamespace = $entityLocator->hasNamespace($namespace);
+```
+
+**Map**
+
+Map an alias to an entity class name.
+
+- `$alias` is a string representing the alias.
+- `$className` is a string representing the entity class name.
+
+```php
+$entityLocator->map($alias, $className);
+```
+
+**Remove Namespace**
+
+Remove a namespace.
+
+- `$namespace` is a string representing the namespace.
+
+```php
+$entityLocator->removeNamespace($namespace);
+```
+
+**Set Default Entity Class**
+
+Set the default entity class name.
+
+- `$defaultEntityClass` is a string representing the default entity class name.
+
+```php
+$entityLocator->setDefaultEntityClass($defaultEntityClass);
+```
+
+
+## Entities
+
+```php
+use Fyre\Entity\Entity;
+```
 
 - `$data` is an array containing the data for populating the entity.
 - `$options` is an array containing the options for creating the entity.
@@ -37,9 +156,6 @@ use Fyre\Entity\Entity;
 ```php
 $entity = new Entity($data, $options);
 ```
-
-
-## Methods
 
 **Clean**
 
@@ -498,113 +614,4 @@ Alternatively, you can unset a value using the magic `__unset` method or array s
 ```php
 unset($entity->$field);
 unset($entity[$field]);
-```
-
-
-## Entity Locators
-
-```php
-use Fyre\Entity\EntityLocator;
-```
-
-- `$inflector` is an [*Inflector*](https://github.com/elusivecodes/FyreInflector).
-- `$namespaces` is an array containing the namespaces.
-
-```php
-$entityLocator = new EntityLocator($inflector, $namespaces);
-```
-
-**Add Namespace**
-
-Add a namespace for locating entities.
-
-- `$namespace` is a string representing the namespace.
-
-```php
-$entityLocator->addNamespace($namespace);
-```
-
-**Clear**
-
-Clear all namespaces and entities.
-
-```php
-$entityLocator->clear();
-```
-
-**Find**
-
-Find the entity class name for an alias.
-
-- `$alias` is a string representing the alias.
-
-```php
-$className = $entityLocator->find($alias);
-```
-
-**Find Alias**
-
-Find the alias for an entity class name.
-
-- `$className` is a string representing the entity class name.
-
-```php
-$alias = $entityLocator->findAlias($className);
-```
-
-**Get Default Entity Class**
-
-Get the default entity class name.
-
-```php
-$defaultEntityClass = $entityLocator->getDefaultEntityClass();
-```
-
-**Get Namespaces**
-
-Get the namespaces.
-
-```php
-$namespaces = $entityLocator->getNamespaces();
-```
-
-**Has Namespace**
-
-Check if a namespace exists.
-
-- `$namespace` is a string representing the namespace.
-
-```php
-$hasNamespace = $entityLocator->hasNamespace($namespace);
-```
-
-**Map**
-
-Map an alias to an entity class name.
-
-- `$alias` is a string representing the alias.
-- `$className` is a string representing the entity class name.
-
-```php
-$entityLocator->map($alias, $className);
-```
-
-**Remove Namespace**
-
-Remove a namespace.
-
-- `$namespace` is a string representing the namespace.
-
-```php
-$entityLocator->removeNamespace($namespace);
-```
-
-**Set Default Entity Class**
-
-Set the default entity class name.
-
-- `$defaultEntityClass` is a string representing the default entity class name.
-
-```php
-$entityLocator->setDefaultEntityClass($defaultEntityClass);
 ```
