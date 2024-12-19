@@ -85,6 +85,8 @@ trait OriginalTestTrait
     {
         $entity = new Entity([
             'test' => 1,
+        ], [
+            'clean' => true,
         ]);
 
         $entity->set('test', 2);
@@ -129,7 +131,7 @@ trait OriginalTestTrait
         $entity->set('test', 2);
 
         $this->assertSame(
-            1,
+            2,
             $entity->getOriginal('test')
         );
     }

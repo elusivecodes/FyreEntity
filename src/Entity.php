@@ -53,6 +53,8 @@ class Entity implements ArrayAccess, JsonSerializable
 
     protected array $original = [];
 
+    protected array $originalFields = [];
+
     protected array $savedState = [];
 
     protected string|null $source = null;
@@ -179,6 +181,7 @@ class Entity implements ArrayAccess, JsonSerializable
     public function clean(): static
     {
         $this->original = [];
+        $this->originalFields = array_keys($this->fields);
         $this->dirty = [];
         $this->errors = [];
         $this->invalid = [];
@@ -384,10 +387,14 @@ class Entity implements ArrayAccess, JsonSerializable
     public function getOriginal(string|null $field = null): mixed
     {
         if (!$field) {
-            return array_merge($this->original, $this->fields);
+            return array_merge($this->fields, $this->original);
         }
 
-        return $this->original[$field] ?? $this->fields[$field] ?? null;
+        if (array_key_exists($field, $this->original)) {
+            return $this->original[$field];
+        }
+
+        return $this->fields[$field] ?? null;
     }
 
     /**
@@ -630,7 +637,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
         $this->setDirty($field, true);
 
-        if ($hasField && !array_key_exists($field, $this->original)) {
+        if ($hasField && !array_key_exists($field, $this->original) && in_array($field, $this->originalFields)) {
             $this->original[$field] = $this->fields[$field];
         }
 
