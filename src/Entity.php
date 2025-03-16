@@ -581,12 +581,17 @@ class Entity implements ArrayAccess, JsonSerializable
     /**
      * Restore the saved entity state.
      *
+     * @param bool $restoreErrors Whether to restore the errors.
      * @return static The Entity.
      */
-    public function restoreState(): static
+    public function restoreState(bool $restoreErrors = true): static
     {
         if (count($this->savedState) === 6) {
-            [$this->fields, $this->original, $this->dirty, $this->errors, $this->invalid, $this->new] = $this->savedState;
+            [$this->fields, $this->original, $this->dirty, $errors, $this->invalid, $this->new] = $this->savedState;
+
+            if ($restoreErrors) {
+                $this->errors = $errors;
+            }
         }
 
         return $this;

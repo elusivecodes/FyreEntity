@@ -443,8 +443,10 @@ $isNew = $entity->isNew();
 
 Restore the saved entity state.
 
+- `$restoreErrors` is a boolean indicating whether to restore the errors, and will default to *true*.
+
 ```php
-$entity->restoreState();
+$entity->restoreState($restoreErrors);
 ```
 
 **Save State**
