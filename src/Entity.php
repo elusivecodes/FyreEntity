@@ -162,7 +162,11 @@ class Entity implements ArrayAccess, JsonSerializable
      */
     public function &get(string $field): mixed
     {
-        $value = &$this->fields[$field] ?? null;
+        $value = null;
+
+        if (array_key_exists($field, $this->fields)) {
+            $value = &$this->fields[$field];
+        }
 
         $method = static::mutateMethod($field, 'get');
 
