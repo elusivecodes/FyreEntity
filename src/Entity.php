@@ -1074,8 +1074,17 @@ class Entity implements ArrayAccess, JsonSerializable
             return true;
         }
 
-        if (is_object($a) && !($a instanceof Entity) && $a == $b) {
+        if (
+            is_object($a) &&
+            !($a instanceof Entity) &&
+            !($a instanceof DateTime) &&
+            $a == $b
+        ) {
             return true;
+        }
+
+        if ($a instanceof DateTime && $b instanceof DateTime) {
+            return $a->isSame($b);
         }
 
         return false;
