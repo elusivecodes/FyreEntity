@@ -5,6 +5,7 @@ namespace Tests\Entity;
 
 use Fyre\Entity\Entity;
 use PHPUnit\Framework\TestCase;
+use Tests\Mock\MockEntity;
 
 final class EntityTest extends TestCase
 {
@@ -17,7 +18,7 @@ final class EntityTest extends TestCase
     use MagicTestTrait;
     use MutationTestTrait;
     use OriginalTestTrait;
-    use StateTestTrait;
+    use TemporaryTestTrait;
     use VirtualTestTrait;
 
     public function testClean(): void
@@ -60,6 +61,18 @@ final class EntityTest extends TestCase
 
         $this->assertTrue(
             $entity->isDirty()
+        );
+    }
+
+    public function testEntityNotMutate(): void
+    {
+        $entity = new MockEntity([
+            'integer' => 2.5,
+        ], ['mutate' => false]);
+
+        $this->assertSame(
+            2.5,
+            $entity->get('integer')
         );
     }
 

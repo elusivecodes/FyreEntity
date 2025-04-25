@@ -7,20 +7,6 @@ use Fyre\Entity\Entity;
 
 trait OriginalTestTrait
 {
-    public function tesExtractOriginalFallback(): void
-    {
-        $entity = new Entity([
-            'test' => 1,
-        ]);
-
-        $this->assertSame(
-            [
-                'test' => 1,
-            ],
-            $entity->extractOriginal('test')
-        );
-    }
-
     public function testCleanOriginal(): void
     {
         $entity = new Entity([
@@ -69,14 +55,54 @@ trait OriginalTestTrait
         );
     }
 
+    public function testExtractOriginalChanged(): void
+    {
+        $entity = new Entity([
+            'test1' => 1,
+            'test2' => 2,
+            'test3' => 3,
+        ]);
+
+        $entity->set('test2', 4);
+
+        $this->assertSame(
+            [
+                'test2' => 2,
+            ],
+            $entity->extractOriginalChanged(['test1', 'test2', 'test3'])
+        );
+    }
+
+    public function testExtractOriginalChangedInvalid(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            [],
+            $entity->extractOriginalChanged(['invalid'])
+        );
+    }
+
+    public function testExtractOriginalFallback(): void
+    {
+        $entity = new Entity([
+            'test' => 1,
+        ]);
+
+        $this->assertSame(
+            [
+                'test' => 1,
+            ],
+            $entity->extractOriginal(['test'])
+        );
+    }
+
     public function testExtractOriginalInvalid(): void
     {
         $entity = new Entity();
 
         $this->assertSame(
-            [
-                'invalid' => null,
-            ],
+            [],
             $entity->extractOriginal(['invalid'])
         );
     }
@@ -123,6 +149,20 @@ trait OriginalTestTrait
         );
     }
 
+    public function testGetOriginalFields(): void
+    {
+        $entity = new Entity([
+            'test' => 1,
+        ]);
+
+        $this->assertSame(
+            [
+                'test',
+            ],
+            $entity->getOriginalFields()
+        );
+    }
+
     public function testGetOriginalFromSet(): void
     {
         $entity = new Entity();
@@ -157,6 +197,86 @@ trait OriginalTestTrait
         $this->assertSame(
             1,
             $entity->getOriginal('test')
+        );
+    }
+
+    public function testGetOriginalValues(): void
+    {
+        $entity = new Entity([
+            'test1' => 1,
+            'test2' => 2,
+            'test3' => 3,
+        ]);
+
+        $entity->set('test2', 4);
+        $entity->set('test4', 4);
+
+        $this->assertSame(
+            [
+                'test1' => 1,
+                'test2' => 2,
+                'test3' => 3,
+            ],
+            $entity->getOriginalValues()
+        );
+    }
+
+    public function testHasOriginal(): void
+    {
+        $entity = new Entity([
+            'test' => 1,
+        ]);
+        $entity->set('test', 2);
+
+        $this->assertTrue(
+            $entity->hasOriginal('test')
+        );
+    }
+
+    public function testHasOriginalFalse(): void
+    {
+        $entity = new Entity([
+            'test' => 1,
+        ]);
+
+        $this->assertFalse(
+            $entity->hasOriginal('test')
+        );
+    }
+
+    public function testIsOriginalField(): void
+    {
+        $entity = new Entity([
+            'test' => 1,
+        ]);
+
+        $this->assertTrue(
+            $entity->isOriginalField('test')
+        );
+    }
+
+    public function testIsOriginalFieldFalse(): void
+    {
+        $entity = new Entity();
+        $entity->set('test', 1);
+
+        $this->assertFalse(
+            $entity->isOriginalField('test')
+        );
+    }
+
+    public function testSetOriginalFields(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->setOriginalFields(['test'])
+        );
+
+        $this->assertSame(
+            ['test'],
+            $entity->getOriginalFields()
         );
     }
 

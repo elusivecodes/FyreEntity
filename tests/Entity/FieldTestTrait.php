@@ -81,6 +81,27 @@ trait FieldTestTrait
         );
     }
 
+    public function testFillOriginal(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->fill([
+                'test1' => 2,
+                'test2' => 3,
+            ], ['original' => true])
+        );
+
+        $this->assertSame(
+            [
+                'test1',
+                'test2',
+            ],
+            $entity->getOriginalFields()
+        );
+    }
+
     public function testGetInvalid(): void
     {
         $entity = new Entity();
@@ -174,37 +195,6 @@ trait FieldTestTrait
         );
     }
 
-    public function testIsEmptyField(): void
-    {
-        $entity = new Entity([
-            'test' => 2,
-        ]);
-
-        $this->assertFalse(
-            $entity->isEmpty('test')
-        );
-    }
-
-    public function testIsEmptyFieldEmpty(): void
-    {
-        $entity = new Entity([
-            'test' => '',
-        ]);
-
-        $this->assertTrue(
-            $entity->isEmpty('test')
-        );
-    }
-
-    public function testIsEmptyFieldInvalid(): void
-    {
-        $entity = new Entity();
-
-        $this->assertTrue(
-            $entity->isEmpty('invalid')
-        );
-    }
-
     public function testSet(): void
     {
         $entity = new Entity();
@@ -217,6 +207,23 @@ trait FieldTestTrait
         $this->assertSame(
             2,
             $entity->get('test')
+        );
+    }
+
+    public function testSetOriginal(): void
+    {
+        $entity = new Entity();
+
+        $this->assertSame(
+            $entity,
+            $entity->set('test', 2, ['original' => true])
+        );
+
+        $this->assertSame(
+            [
+                'test',
+            ],
+            $entity->getOriginalFields()
         );
     }
 

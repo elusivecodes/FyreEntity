@@ -4,11 +4,13 @@ namespace Fyre\Entity;
 
 use ArrayAccess;
 use Fyre\DateTime\DateTime;
+use InvalidArgumentException;
 use JsonSerializable;
 
 use function array_combine;
 use function array_diff;
 use function array_diff_key;
+use function array_fill_keys;
 use function array_filter;
 use function array_key_exists;
 use function array_keys;
@@ -21,6 +23,7 @@ use function explode;
 use function in_array;
 use function is_array;
 use function is_object;
+use function is_scalar;
 use function json_encode;
 use function lcfirst;
 use function method_exists;
@@ -55,9 +58,9 @@ class Entity implements ArrayAccess, JsonSerializable
 
     protected array $originalFields = [];
 
-    protected array $savedState = [];
-
     protected string|null $source = null;
+
+    protected array $temporaryFields = [];
 
     protected array $virtual = [];
 
@@ -72,6 +75,8 @@ class Entity implements ArrayAccess, JsonSerializable
         $options['source'] ??= null;
         $options['new'] ??= true;
         $options['clean'] ??= true;
+        $options['guard'] ??= false;
+        $options['mutate'] ??= true;
 
         if ($options['source']) {
             $this->setSource($options['source']);
@@ -82,7 +87,19 @@ class Entity implements ArrayAccess, JsonSerializable
         }
 
         if ($data !== []) {
-            $this->fill($data);
+            $this->setOriginalFields(array_keys($data), true);
+
+            if ($options['clean'] && !$options['mutate'] && !$options['guard']) {
+                $this->fields = $data;
+
+                return;
+            }
+
+            $this->fill($data, [
+                'original' => true,
+                'mutate' => $options['mutate'],
+                'guard' => $options['guard'],
+            ]);
         }
 
         if ($options['clean']) {
@@ -185,11 +202,11 @@ class Entity implements ArrayAccess, JsonSerializable
     public function clean(): static
     {
         $this->original = [];
-        $this->originalFields = array_keys($this->fields);
+        $this->setOriginalFields(array_keys($this->fields), true);
+        $this->temporaryFields = [];
         $this->dirty = [];
         $this->errors = [];
         $this->invalid = [];
-        $this->savedState = [];
 
         return $this;
     }
@@ -205,6 +222,30 @@ class Entity implements ArrayAccess, JsonSerializable
         foreach ($fields as $field) {
             $this->unset($field);
         }
+
+        return $this;
+    }
+
+    /**
+     * Clear temporary fields from the entity.
+     *
+     * @return Entity The Entity.
+     */
+    public function clearTemporaryFields(): static
+    {
+        foreach ($this->temporaryFields as $field => $_) {
+            if (array_key_exists($field, $this->original)) {
+                $this->fields[$field] = $this->original[$field];
+            } else {
+                unset($this->fields[$field]);
+                unset($this->dirty[$field]);
+            }
+
+            unset($this->original[$field]);
+            unset($this->invalid[$field]);
+        }
+
+        $this->temporaryFields = [];
 
         return $this;
     }
@@ -257,7 +298,34 @@ class Entity implements ArrayAccess, JsonSerializable
     {
         $result = [];
         foreach ($fields as $field) {
+            if (!array_key_exists($field, $this->original) && !array_key_exists($field, $this->originalFields)) {
+                continue;
+            }
+
             $result[$field] = $this->getOriginal($field);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Extract original changed values from the entity.
+     *
+     * @param array $fields The fields to extract.
+     * @return array The extracted values.
+     */
+    public function extractOriginalChanged(array $fields): array
+    {
+        $result = [];
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $this->original)) {
+                continue;
+            }
+
+            $original = $this->getOriginal($field);
+            if ($original !== $this->get($field)) {
+                $result[$field] = $original;
+            }
         }
 
         return $result;
@@ -386,9 +454,10 @@ class Entity implements ArrayAccess, JsonSerializable
      * Get an original value from the entity.
      *
      * @param string $field The field name.
+     * @param bool $fallback Whether to allow fallback to the current value.
      * @return mixed The value.
      */
-    public function getOriginal(string|null $field = null): mixed
+    public function getOriginal(string|null $field = null, bool $fallback = true): mixed
     {
         if (!$field) {
             return array_merge($this->fields, $this->original);
@@ -398,7 +467,40 @@ class Entity implements ArrayAccess, JsonSerializable
             return $this->original[$field];
         }
 
+        if (!$fallback) {
+            throw new InvalidArgumentException('Cannot get original value for field: '.$field);
+        }
+
         return $this->fields[$field] ?? null;
+    }
+
+    /**
+     * Get the original fields from the entity.
+     *
+     * @return array The original fields.
+     */
+    public function getOriginalFields(): array
+    {
+        return array_keys($this->originalFields);
+    }
+
+    /**
+     * Get the original values from the entity.
+     *
+     * @return array The original values.
+     */
+    public function getOriginalValues(): array
+    {
+        $original = [];
+        foreach ($this->fields as $key => $value) {
+            if (array_key_exists($key, $this->original)) {
+                $original[$key] = $this->original[$key];
+            } else if (array_key_exists($key, $this->originalFields)) {
+                $original[$key] = $value;
+            }
+        }
+
+        return $original;
     }
 
     /**
@@ -409,6 +511,16 @@ class Entity implements ArrayAccess, JsonSerializable
     public function getSource(): string|null
     {
         return $this->source;
+    }
+
+    /**
+     * Get the temporary fields from the entity.
+     *
+     * @return array The temporary fields.
+     */
+    public function getTemporaryFields(): array
+    {
+        return array_keys($this->temporaryFields);
     }
 
     /**
@@ -471,6 +583,17 @@ class Entity implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Determine if an entity field has an original value.
+     *
+     * @param string $field The field name.
+     * @return bool TRUE if the field has an original value, otherwise FALSE.
+     */
+    public function hasOriginal(string $field): bool
+    {
+        return array_key_exists($field, $this->original);
+    }
+
+    /**
      * Determine if an entity value is not empty.
      *
      * @param string $field The field name.
@@ -478,7 +601,7 @@ class Entity implements ArrayAccess, JsonSerializable
      */
     public function hasValue(string $field): bool
     {
-        return !$this->isEmpty($field);
+        return array_key_exists($field, $this->fields) && !in_array($this->fields[$field], [null, '', []]);
     }
 
     /**
@@ -508,21 +631,16 @@ class Entity implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * Determine if an entity value is empty.
+     * Determine if an entity is empty.
      *
-     * @param string|null $field The field name.
-     * @return bool TRUE if the value is empty, otherwise FALSE.
+     * @return bool TRUE if the entity is empty, otherwise FALSE.
      */
-    public function isEmpty(string|null $field = null): bool
+    public function isEmpty(): bool
     {
-        if ($field !== null) {
-            return !array_key_exists($field, $this->fields) || in_array($this->fields[$field], [null, '', []]);
-        }
-
         $fields = array_keys($this->fields);
 
         foreach ($fields as $field) {
-            if (!$this->isEmpty($field)) {
+            if ($this->hasValue($field)) {
                 return false;
             }
         }
@@ -538,6 +656,17 @@ class Entity implements ArrayAccess, JsonSerializable
     public function isNew(): bool
     {
         return $this->new;
+    }
+
+    /**
+     * Determine if an entity field is original.
+     *
+     * @param string $field The field name.
+     * @return bool TRUE if the field is original, otherwise FALSE.
+     */
+    public function isOriginalField(string $field): bool
+    {
+        return array_key_exists($field, $this->originalFields);
     }
 
     /**
@@ -583,37 +712,6 @@ class Entity implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * Restore the saved entity state.
-     *
-     * @param bool $restoreErrors Whether to restore the errors.
-     * @return static The Entity.
-     */
-    public function restoreState(bool $restoreErrors = true): static
-    {
-        if (count($this->savedState) === 6) {
-            [$this->fields, $this->original, $this->dirty, $errors, $this->invalid, $this->new] = $this->savedState;
-
-            if ($restoreErrors) {
-                $this->errors = $errors;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Save the current entity state.
-     *
-     * @return static The Entity.
-     */
-    public function saveState(): static
-    {
-        $this->savedState = [$this->fields, $this->original, $this->dirty, $this->errors, $this->invalid, $this->new];
-
-        return $this;
-    }
-
-    /**
      * Set an entity value.
      *
      * @param string $field The field name.
@@ -625,6 +723,8 @@ class Entity implements ArrayAccess, JsonSerializable
     {
         $options['guard'] ??= false;
         $options['mutate'] ??= true;
+        $options['original'] ??= false;
+        $options['temporary'] ??= false;
 
         if ($options['guard'] && !$this->isAccessible($field)) {
             return $this;
@@ -640,14 +740,27 @@ class Entity implements ArrayAccess, JsonSerializable
 
         $hasField = array_key_exists($field, $this->fields);
 
-        if ($hasField && $value === $this->fields[$field]) {
+        if ($hasField && !$options['original'] && static::compareValues($value, $this->fields[$field])) {
             return $this;
         }
 
         $this->setDirty($field, true);
 
-        if ($hasField && !array_key_exists($field, $this->original) && in_array($field, $this->originalFields)) {
+        if (
+            $hasField &&
+            !array_key_exists($field, $this->original) &&
+            array_key_exists($field, $this->originalFields) &&
+            $value !== $this->fields[$field]
+        ) {
             $this->original[$field] = $this->fields[$field];
+        }
+
+        if ($options['original']) {
+            $this->originalFields[$field] = true;
+        }
+
+        if ($options['temporary']) {
+            $this->temporaryFields[$field] = true;
         }
 
         $this->fields[$field] = $value;
@@ -687,7 +800,10 @@ class Entity implements ArrayAccess, JsonSerializable
     public function setDirty(string $field, bool $dirty = true): static
     {
         if ($dirty === false) {
+            $this->originalFields[$field] = true;
+
             unset($this->dirty[$field]);
+            unset($this->original[$field]);
         } else {
             $this->dirty[$field] = true;
 
@@ -761,10 +877,8 @@ class Entity implements ArrayAccess, JsonSerializable
      */
     public function setInvalid(string $field, mixed $value, bool $overwrite = true): static
     {
-        if ($overwrite) {
+        if ($overwrite || !array_key_exists($field, $this->invalid)) {
             $this->invalid[$field] = $value;
-        } else {
-            $this->invalid[$field] ??= $value;
         }
 
         return $this;
@@ -784,6 +898,24 @@ class Entity implements ArrayAccess, JsonSerializable
     }
 
     /**
+     * Set original fields.
+     *
+     * @param array $fields The fields.
+     * @param bool $overwrite Whether to overwrite existing fields.
+     * @return Entity The Entity.
+     */
+    public function setOriginalFields(array $fields, bool $overwrite = false): static
+    {
+        if ($overwrite) {
+            $this->originalFields = array_fill_keys($fields, true);
+        } else {
+            $this->originalFields += array_fill_keys($fields, true);
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the entity source.
      *
      * @param string $source The source.
@@ -792,6 +924,24 @@ class Entity implements ArrayAccess, JsonSerializable
     public function setSource(string $source): static
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    /**
+     * Set temporary fields.
+     *
+     * @param array $fields The fields.
+     * @param bool $overwrite Whether to overwrite existing fields.
+     * @return Entity The Entity.
+     */
+    public function setTemporaryFields(array $fields, bool $overwrite = false): static
+    {
+        if ($overwrite) {
+            $this->temporaryFields = array_fill_keys($fields, true);
+        } else {
+            $this->temporaryFields += array_fill_keys($fields, true);
+        }
 
         return $this;
     }
@@ -906,6 +1056,26 @@ class Entity implements ArrayAccess, JsonSerializable
                     return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Compare two values.
+     *
+     * @param mixed $a The first value.
+     * @param mixed $b The second value.
+     * @return bool TRUE if the values are equal, otherwise FALSE.
+     */
+    protected static function compareValues(mixed $a, mixed $b): bool
+    {
+        if (($a === null || is_scalar($a)) && $a === $b) {
+            return true;
+        }
+
+        if (is_object($a) && !($a instanceof Entity) && $a == $b) {
+            return true;
         }
 
         return false;

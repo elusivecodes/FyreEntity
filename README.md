@@ -152,6 +152,8 @@ use Fyre\Entity\Entity;
     - `source` is a string representing the entity source, and will default to *null*.
     - `new` is a boolean indicating whether the entity is new, and will default to *true*.
     - `clean` is a boolean indicating whether to clean the entity after init, and will default to *true*.
+    - `guard` is a boolean indicating whether to check whether the fields are accessible, and will default to *false*.
+    - `mutate` is a boolean indicating whether to mutate the values, and will default to *true*.
 
 ```php
 $entity = new Entity($data, $options);
@@ -173,6 +175,14 @@ Clear values from the entity.
 
 ```php
 $entity->clear($fields);
+```
+
+**Clear Temporary Fields**
+
+Clear temporary fields from the entity.
+
+```php
+$entity->clearTemporaryFields();
 ```
 
 **Extract**
@@ -211,14 +221,25 @@ Extract original values from the entity.
 $values = $entity->extractOriginal($fields);
 ```
 
+**Extract Original Changed**
+
+Extract original changed values from the entity.
+
+- `$fields` is an array containing the fields to extract.
+
+```php
+$values = $entity->extractOriginalChanged($fields);
+```
+
 **Fill**
 
 Fill the entity with values.
 
-- `$fields` is an array containing the data to fill.
+- `$data` is an array containing the data to fill.
 - `$options` is an array containing options for filling the entity.
-    - `guard` is a boolean indicating whether to check whether the field is accessible, and will default to *true*.
-    - `mutate` is a boolean indicating whether to mutate the value, and will default to *true*.
+    - `guard` is a boolean indicating whether to check whether the fields are accessible, and will default to *true*.
+    - `mutate` is a boolean indicating whether to mutate the values, and will default to *true*.
+    - `original` is a boolean indicating whether to set the fields as original, and will default to *false*.
 
 ```php
 $entity->fill($data, $options);
@@ -230,7 +251,7 @@ If the `mutate` option is set to *true*, and a `_setFieldName` method exists in 
 
 Fill the entity with invalid values.
 
-- `$fields` is an array containing the data to fill.
+- `$data` is an array containing the data to fill.
 - `$overwrite` is a boolean indicating whether to overwrite existing values, and will default to *false*.
 
 ```php
@@ -319,9 +340,10 @@ $invalid = $entity->getInvalid();
 Get an original value from the entity.
 
 - `$field` is a string representing the field name.
+- `$fallback` is a boolean indicating whether to fallback to the current value, and will default to *true*.
 
 ```php
-$value = $entity->getOriginal($field);
+$value = $entity->getOriginal($field, $fallback);
 ```
 
 If the `$field` argument is omitted, this method will return all original values.
@@ -330,12 +352,36 @@ If the `$field` argument is omitted, this method will return all original values
 $original = $entity->getOriginal();
 ```
 
+**Get Original Fields**
+
+Get the original fields from the entity.
+
+```php
+$originalFields = $entity->getOriginalFields();
+```
+
+**Get Original Values**
+
+Get the original values from the entity.
+
+```php
+$originalValues = $entity->getOriginalValues();
+```
+
 **Get Source**
 
 Get the entity source.
 
 ```php
 $source = $entity->getSource();
+```
+
+**Get Temporary Fields**
+
+Get the temporary fields from the entity.
+
+```php
+$temporaryFields = $entity->getTemporaryFields();
 ```
 
 **Get Virtual**
@@ -369,6 +415,16 @@ Alternatively, you can determine if a value is set using the magic `__isset` met
 ```php
 $isset = isset($entity->$field);
 $isset = isset($entity[$field]);
+```
+
+**Has Original**
+
+Determine if an entity field has an original value.
+
+- `$field` is a string representing the field name.
+
+```php
+$hasOriginal = $entity->hasOriginal($field);
 ```
 
 **Has Value**
@@ -417,15 +473,7 @@ $isDirty = $entity->isDirty();
 
 **Is Empty**
 
-Determine if an entity value is empty.
-
-- `$field` is a string representing the field name.
-
-```php
-$isEmpty = $entity->isEmpty($field);
-```
-
-If the `$field` argument is omitted, this method will determine whether all entity fields are empty.
+Determine if an entity is empty.
 
 ```php
 $isEmpty = $entity->isEmpty();
@@ -439,22 +487,14 @@ Determine if the entity is new.
 $isNew = $entity->isNew();
 ```
 
-**Restore State**
+**Is Original Field**
 
-Restore the saved entity state.
+Determine if an entity field is original.
 
-- `$restoreErrors` is a boolean indicating whether to restore the errors, and will default to *true*.
-
-```php
-$entity->restoreState($restoreErrors);
-```
-
-**Save State**
-
-Save the current entity state.
+- `$field` is a string representing the field name.
 
 ```php
-$entity->saveState();
+$isOriginalField = $entity->isOriginalField($field);
 ```
 
 **Set**
@@ -466,6 +506,7 @@ Set an entity value.
 - `$options` is an array containing options for filling the entity.
     - `guard` is a boolean indicating whether to check whether the field is accessible, and will default to *true*.
     - `mutate` is a boolean indicating whether to mutate the value, and will default to *true*.
+    - `original` is a boolean indicating whether to set the field as an original, and will default to *false*.
 
 ```php
 $entity->set($field, $value, $options);
@@ -529,7 +570,7 @@ $entity->setErrors($errors, $overwrite);
 
 Set hidden fields.
 
-- `$field` is an array containing the field names.
+- `$fields` is an array containing the field names.
 - `$merge` is a boolean indicating whether to merge with existing fields.
 
 ```php
@@ -558,6 +599,17 @@ Set whether the entity is new.
 $entity->setNew($new);
 ```
 
+**Set Original Fields**
+
+Set original fields.
+
+- `$fields` is an array containing the field names.
+- `$merge` is a boolean indicating whether to merge with existing fields.
+
+```php
+$entity->setOriginalFields($fields, $merge);
+```
+
 **Set Source**
 
 Set the entity source.
@@ -568,11 +620,20 @@ Set the entity source.
 $entity->setSource($source);
 ```
 
+**Set Temporary Fields**
+
+- `$fields` is an array containing the field names.
+- `$overwrite` is a boolean indicating whether to overwrite existing fields, and will default to *false*.
+
+```php
+$entity->setTemporaryFields($fields, $overwrite);
+```
+
 **Set Virtual**
 
 Set virtual fields.
 
-- `$field` is an array containing the field names.
+- `$fields` is an array containing the field names.
 - `$merge` is a boolean indicating whether to merge with existing fields.
 
 ```php
