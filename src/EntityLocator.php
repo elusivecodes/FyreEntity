@@ -22,8 +22,6 @@ class EntityLocator
 
     protected array $entities = [];
 
-    protected Inflector $inflector;
-
     protected array $namespaces = [];
 
     /**
@@ -32,10 +30,9 @@ class EntityLocator
      * @param Inflector $inflector The Inflector.
      * @param array $namespaces The namespaces.
      */
-    public function __construct(Inflector $inflector)
-    {
-        $this->inflector = $inflector;
-    }
+    public function __construct(
+        protected Inflector $inflector
+    ) {}
 
     /**
      * Add a namespace for locating entities.
