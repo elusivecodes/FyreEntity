@@ -4,6 +4,7 @@ namespace Fyre\Entity;
 
 use ArrayAccess;
 use Fyre\DateTime\DateTime;
+use Fyre\Utility\Traits\MacroTrait;
 use InvalidArgumentException;
 use JsonSerializable;
 
@@ -38,6 +39,8 @@ use const JSON_PRETTY_PRINT;
  */
 class Entity implements ArrayAccess, JsonSerializable
 {
+    use MacroTrait;
+
     protected array $accessible = [
         '*' => true,
     ];

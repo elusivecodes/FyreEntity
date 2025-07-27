@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace Tests\Entity;
 
 use Fyre\Entity\Entity;
+use Fyre\Utility\Traits\MacroTrait;
 use PHPUnit\Framework\TestCase;
 use Tests\Mock\MockEntity;
+
+use function class_uses;
 
 final class EntityTest extends TestCase
 {
@@ -121,6 +124,14 @@ final class EntityTest extends TestCase
         $this->assertSame(
             'test',
             $entity->getSource()
+        );
+    }
+
+    public function testMacroable(): void
+    {
+        $this->assertContains(
+            MacroTrait::class,
+            class_uses(Entity::class)
         );
     }
 }
