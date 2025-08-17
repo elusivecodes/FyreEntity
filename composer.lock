@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "fyre/inflector",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elusivecodes/FyreInflector.git",
-                "reference": "063daa6cd57c2743d98eb7713816dfe48fc4bb0b"
+                "reference": "b4c6495f0768dd77169bc4415eb48fd54fc0f717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elusivecodes/FyreInflector/zipball/063daa6cd57c2743d98eb7713816dfe48fc4bb0b",
-                "reference": "063daa6cd57c2743d98eb7713816dfe48fc4bb0b",
+                "url": "https://api.github.com/repos/elusivecodes/FyreInflector/zipball/b4c6495f0768dd77169bc4415eb48fd54fc0f717",
+                "reference": "b4c6495f0768dd77169bc4415eb48fd54fc0f717",
                 "shasum": ""
             },
             "require": {
@@ -47,9 +47,9 @@
             "description": "An inflection library.",
             "support": {
                 "issues": "https://github.com/elusivecodes/FyreInflector/issues",
-                "source": "https://github.com/elusivecodes/FyreInflector/tree/v3.0.4"
+                "source": "https://github.com/elusivecodes/FyreInflector/tree/v3.0.5"
             },
-            "time": "2025-08-17T05:22:34+00:00"
+            "time": "2025-08-17T05:30:55+00:00"
         },
         {
             "name": "fyre/macro",
