@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Fyre\Entity;
 
 use Fyre\Utility\Inflector;
+use Fyre\Utility\Traits\MacroTrait;
 use ReflectionClass;
 
 use function array_search;
@@ -18,6 +19,8 @@ use function trim;
  */
 class EntityLocator
 {
+    use MacroTrait;
+
     protected string $defaultEntityClass = Entity::class;
 
     protected array $entities = [];

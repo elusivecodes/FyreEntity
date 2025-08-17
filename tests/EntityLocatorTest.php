@@ -6,8 +6,11 @@ namespace Tests;
 use Fyre\Entity\Entity;
 use Fyre\Entity\EntityLocator;
 use Fyre\Utility\Inflector;
+use Fyre\Utility\Traits\MacroTrait;
 use PHPUnit\Framework\TestCase;
 use Tests\Mock\MockEntity;
+
+use function class_uses;
 
 final class EntityLocatorTest extends TestCase
 {
@@ -74,6 +77,14 @@ final class EntityLocatorTest extends TestCase
     {
         $this->assertFalse(
             $this->locator->hasNamespace('Tests\Invalid')
+        );
+    }
+
+    public function testMacroable(): void
+    {
+        $this->assertContains(
+            MacroTrait::class,
+            class_uses(EntityLocator::class)
         );
     }
 
