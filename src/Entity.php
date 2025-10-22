@@ -419,11 +419,11 @@ class Entity implements ArrayAccess, JsonSerializable
         $diff = array_diff_key($this->fields, $this->errors);
 
         $fields = array_map(
-            fn(mixed $value): array => static::readError($value),
+            static fn(mixed $value): array => static::readError($value),
             $diff
         );
 
-        $fields = array_filter($fields, fn(array $errors): bool => $errors !== []);
+        $fields = array_filter($fields, static fn(array $errors): bool => $errors !== []);
 
         return array_merge($this->errors, $fields);
     }
@@ -987,7 +987,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
                 if ($convertObjects) {
                     if ($value instanceof DateTime) {
-                        return $value->toISOString();
+                        return $value->toIsoString();
                     }
 
                     if (is_object($value) && method_exists($value, '__toString')) {
@@ -997,7 +997,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
                 if (is_array($value)) {
                     return array_map(
-                        function(mixed $val) use ($convertObjects): mixed {
+                        static function(mixed $val) use ($convertObjects): mixed {
                             if ($val instanceof Entity) {
                                 return $val->toArray($convertObjects);
                             }
@@ -1134,7 +1134,7 @@ class Entity implements ArrayAccess, JsonSerializable
 
         if (is_array($value)) {
             $fields = array_map(
-                function(mixed $val) use ($field): array {
+                static function(mixed $val) use ($field): array {
                     if ($val instanceof Entity) {
                         return $field ?
                             $val->getError($field) :
@@ -1146,7 +1146,7 @@ class Entity implements ArrayAccess, JsonSerializable
                 $value
             );
 
-            return array_filter($fields, fn(array $errors): bool => $errors !== []);
+            return array_filter($fields, static fn(array $errors): bool => $errors !== []);
         }
 
         return [];

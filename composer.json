@@ -20,12 +20,12 @@
         }
     },
     "require": {
-        "fyre/inflector": "^3.0",
-        "fyre/macro": "^1.0"
+        "fyre/datetime": "^4.0",
+        "fyre/inflector": "^4.0",
+        "fyre/macro": "^2.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.59",
-        "fyre/datetime": "^3.0",
         "fyre/php-cs-fixer-config": "^1.0",
         "phpunit/phpunit": "^12"
     },
