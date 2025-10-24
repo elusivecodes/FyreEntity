@@ -7,6 +7,7 @@ use Fyre\DateTime\DateTime;
 use Fyre\Utility\Traits\MacroTrait;
 use InvalidArgumentException;
 use JsonSerializable;
+use Stringable;
 
 use function array_combine;
 use function array_diff;
@@ -37,7 +38,7 @@ use const JSON_PRETTY_PRINT;
 /**
  * Entity
  */
-class Entity implements ArrayAccess, JsonSerializable
+class Entity implements ArrayAccess, JsonSerializable, Stringable
 {
     use MacroTrait;
 
@@ -986,11 +987,11 @@ class Entity implements ArrayAccess, JsonSerializable
                 }
 
                 if ($convertObjects) {
-                    if ($value instanceof DateTime) {
-                        return $value->toIsoString();
+                    if ($value instanceof JsonSerializable) {
+                        return $value->jsonSerialize();
                     }
 
-                    if (is_object($value) && method_exists($value, '__toString')) {
+                    if ($value instanceof Stringable) {
                         return (string) $value;
                     }
                 }
