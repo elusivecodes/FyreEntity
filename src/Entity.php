@@ -7,6 +7,7 @@ use Fyre\DateTime\DateTime;
 use Fyre\Utility\Traits\MacroTrait;
 use InvalidArgumentException;
 use JsonSerializable;
+use Override;
 use Stringable;
 
 use function array_combine;
@@ -138,6 +139,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      *
      * @return string The JSON encoded string.
      */
+    #[Override]
     public function __toString(): string
     {
         return $this->toJson();
@@ -170,6 +172,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      * @param mixed $field The field name.
      * @return mixed The value.
      */
+    #[Override]
     public function &offsetGet(mixed $field): mixed
     {
         return $this->get($field);
@@ -678,6 +681,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      *
      * @return array The array for serializing.
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         return $this->toArray(true);
@@ -689,6 +693,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      * @param mixed $field The field name.
      * @return bool TRUE if the value is set, otherwise FALSE.
      */
+    #[Override]
     public function offsetExists(mixed $field): bool
     {
         return $this->has($field);
@@ -700,6 +705,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      * @param mixed $field The field name.
      * @param mixed $value The value.
      */
+    #[Override]
     public function offsetSet(mixed $field, mixed $value): void
     {
         $this->set($field, $value);
@@ -710,6 +716,7 @@ class Entity implements ArrayAccess, JsonSerializable, Stringable
      *
      * @param mixed $field The field name.
      */
+    #[Override]
     public function offsetUnset(mixed $field): void
     {
         $this->unset($field);
